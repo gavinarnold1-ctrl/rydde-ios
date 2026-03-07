@@ -16,7 +16,7 @@ struct RootView: View {
                     hasHousehold = true
                 })
             } else {
-                HomePlaceholderView()
+                HomeScreen()
             }
         }
         .animation(.easeOut(duration: 0.5), value: authService.isAuthenticated)
@@ -66,14 +66,4 @@ struct MeResponse: Codable {
     let household: Household?
 }
 
-struct HomePlaceholderView: View {
-    var body: some View {
-        ZStack {
-            Color(RyddeTheme.Colors.snow)
-                .ignoresSafeArea()
-            Text("Home")
-                .font(RyddeTheme.Fonts.headingMedium)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
-        }
-    }
-}
+

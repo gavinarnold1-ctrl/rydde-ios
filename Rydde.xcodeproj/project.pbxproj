@@ -29,6 +29,12 @@
 		A10020 /* RoomsStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022; };
 		A10021 /* PainPointsStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023; };
 		A10022 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024; };
+		A10023 /* TaskService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10025; };
+		A10024 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026; };
+		A10025 /* SessionFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027; };
+		A10026 /* TaskLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028; };
+		A10027 /* TaskScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029; };
+		A10028 /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +62,12 @@
 		B10022 /* RoomsStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsStep.swift; sourceTree = "<group>"; };
 		B10023 /* PainPointsStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PainPointsStep.swift; sourceTree = "<group>"; };
 		B10024 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
+		B10025 /* TaskService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskService.swift; sourceTree = "<group>"; };
+		B10026 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		B10027 /* SessionFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFlow.swift; sourceTree = "<group>"; };
+		B10028 /* TaskLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskLoadingView.swift; sourceTree = "<group>"; };
+		B10029 /* TaskScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskScreen.swift; sourceTree = "<group>"; };
+		B10030 /* CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionView.swift; sourceTree = "<group>"; };
 		C10001 /* Rydde.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rydde.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -116,6 +128,7 @@
 			children = (
 				B10005 /* APIService.swift */,
 				B10006 /* AuthService.swift */,
+				B10025 /* TaskService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -155,6 +168,11 @@
 		E10008 /* Session */ = {
 			isa = PBXGroup;
 			children = (
+				B10026 /* HomeScreen.swift */,
+				B10027 /* SessionFlow.swift */,
+				B10028 /* TaskLoadingView.swift */,
+				B10029 /* TaskScreen.swift */,
+				B10030 /* CompletionView.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -279,6 +297,12 @@
 				A10020 /* RoomsStep.swift in Sources */,
 				A10021 /* PainPointsStep.swift in Sources */,
 				A10022 /* FlowLayout.swift in Sources */,
+				A10023 /* TaskService.swift in Sources */,
+				A10024 /* HomeScreen.swift in Sources */,
+				A10025 /* SessionFlow.swift in Sources */,
+				A10026 /* TaskLoadingView.swift in Sources */,
+				A10027 /* TaskScreen.swift in Sources */,
+				A10028 /* CompletionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

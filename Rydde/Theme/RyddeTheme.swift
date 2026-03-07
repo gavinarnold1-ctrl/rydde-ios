@@ -57,12 +57,19 @@ enum RyddeTheme {
         static let headingLarge = Font.custom("DMSans-SemiBold", size: 32)
         static let headingMedium = Font.custom("DMSans-SemiBold", size: 24)
         static let headingSmall = Font.custom("DMSans-SemiBold", size: 20)
+        static let headingTask = Font.custom("DMSans-SemiBold", size: 28)
         static let bodyLarge = Font.custom("DMSans-Regular", size: 17)
         static let bodyMedium = Font.custom("DMSans-Medium", size: 16)
+        static let bodyMedium18 = Font.custom("DMSans-Medium", size: 18)
+        static let bodyMedium12 = Font.custom("DMSans-Medium", size: 12)
+        static let bodyMedium11 = Font.custom("DMSans-Medium", size: 11)
         static let body = Font.custom("DMSans-Regular", size: 15)
         static let bodySmall = Font.custom("DMSans-Regular", size: 13)
+        static let bodySmall14 = Font.custom("DMSans-Regular", size: 14)
         static let caption = Font.custom("DMSans-Regular", size: 11)
         static let buttonLabel = Font.custom("DMSans-SemiBold", size: 17)
+        static let timer = Font.custom("DMSans-Regular", size: 48)
+        static let durationPicker = Font.custom("DMSans-Medium", size: 24)
     }
 
     // MARK: - Spacing
