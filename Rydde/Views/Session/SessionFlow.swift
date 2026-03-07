@@ -9,8 +9,9 @@ struct SessionFlowState: Equatable {
     }
 }
 
-enum SessionPhase {
+enum SessionPhase: Equatable {
     case loading
+    case error(String)
     case active
     case completed
 }
@@ -34,6 +35,12 @@ struct SessionFlow: View {
             case .loading:
                 TaskLoadingView()
                     .transition(.opacity)
+            case .error(let message):
+                TaskErrorView(message: message, onRetry: {
+                    phase = .loading
+                    Task { await fetchTask() }
+                }, onCancel: onDismiss)
+                .transition(.opacity)
             case .active:
                 if let task = generatedTask {
                     TaskScreen(
@@ -57,29 +64,26 @@ struct SessionFlow: View {
         }
         .animation(.easeOut(duration: 0.3), value: phase)
         .task {
-            await startSession()
+            await fetchTask()
         }
     }
 
-    private func startSession() async {
-        // Create session record via API
-        let body = CreateSessionRequest(durationMinutes: state.durationMinutes)
-        if let response: Session = try? await APIService.shared.post(
-            endpoint: "/api/sessions",
-            body: body
-        ) {
-            sessionId = response.id
+    private func fetchTask() async {
+        do {
+            let response = try await TaskService.shared.generateTask(
+                durationMinutes: state.durationMinutes
+            )
+            sessionId = response.sessionId
+            generatedTask = response.task
+            phase = .active
+            startTimer()
+        } catch {
+            phase = .error("Couldn't generate a task right now.\nTry again?")
         }
-
-        // Generate task (mock for now)
-        let task = await TaskService.shared.generateTask(durationMinutes: state.durationMinutes)
-        generatedTask = task
-        phase = .active
-        startTimer()
     }
 
     private func startTimer() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             timerSeconds += 1
         }
     }
@@ -117,10 +121,39 @@ struct SessionFlow: View {
 
 // MARK: - API Types
 
-struct CreateSessionRequest: Encodable {
-    let durationMinutes: Int
-}
-
 struct UpdateSessionRequest: Encodable {
     let status: String
+}
+
+// MARK: - Error View
+
+struct TaskErrorView: View {
+    let message: String
+    let onRetry: () -> Void
+    let onCancel: () -> Void
+
+    var body: some View {
+        VStack(spacing: RyddeTheme.Spacing.lg) {
+            Text(message)
+                .font(RyddeTheme.Fonts.body)
+                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .multilineTextAlignment(.center)
+
+            Button(action: onRetry) {
+                Text("Try again")
+                    .font(RyddeTheme.Fonts.buttonLabel)
+                    .foregroundColor(Color(RyddeTheme.Colors.snow))
+                    .frame(width: 200, height: 48)
+                    .background(Color(RyddeTheme.Colors.moss))
+                    .cornerRadius(RyddeTheme.CornerRadius.button)
+            }
+
+            Button(action: onCancel) {
+                Text("Go back")
+                    .font(RyddeTheme.Fonts.bodySmall14)
+                    .foregroundColor(Color(RyddeTheme.Colors.stone))
+            }
+            .buttonStyle(.plain)
+        }
+    }
 }
