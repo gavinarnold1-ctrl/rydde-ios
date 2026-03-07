@@ -9,6 +9,7 @@ struct HomeScreen: View {
     @State private var selectedDuration: Int?
     @State private var activeSession: SessionFlowState?
     @State private var selectedTab: AppTab = .clean
+    @State private var showSettings = false
 
     var body: some View {
         ZStack {
@@ -64,10 +65,13 @@ struct HomeScreen: View {
 
             Spacer()
 
-            Button(action: {}) {
+            Button(action: { showSettings = true }) {
                 Image(systemName: "gearshape")
                     .font(.system(size: 20))
                     .foregroundColor(Color(RyddeTheme.Colors.stone))
+            }
+            .fullScreenCover(isPresented: $showSettings) {
+                SettingsScreen()
             }
         }
     }
