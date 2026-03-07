@@ -12,7 +12,9 @@ struct RootView: View {
             } else if !authService.isAuthenticated {
                 WelcomeView()
             } else if !hasHousehold {
-                OnboardingPlaceholderView()
+                OnboardingFlow(onComplete: {
+                    hasHousehold = true
+                })
             } else {
                 HomePlaceholderView()
             }
@@ -62,18 +64,6 @@ struct RootView: View {
 struct MeResponse: Codable {
     let user: User
     let household: Household?
-}
-
-struct OnboardingPlaceholderView: View {
-    var body: some View {
-        ZStack {
-            Color(RyddeTheme.Colors.snow)
-                .ignoresSafeArea()
-            Text("Onboarding")
-                .font(RyddeTheme.Fonts.headingMedium)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
-        }
-    }
 }
 
 struct HomePlaceholderView: View {

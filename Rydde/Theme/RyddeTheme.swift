@@ -58,6 +58,7 @@ enum RyddeTheme {
         static let headingMedium = Font.custom("DMSans-SemiBold", size: 24)
         static let headingSmall = Font.custom("DMSans-SemiBold", size: 20)
         static let bodyLarge = Font.custom("DMSans-Regular", size: 17)
+        static let bodyMedium = Font.custom("DMSans-Medium", size: 16)
         static let body = Font.custom("DMSans-Regular", size: 15)
         static let bodySmall = Font.custom("DMSans-Regular", size: 13)
         static let caption = Font.custom("DMSans-Regular", size: 11)

@@ -23,6 +23,12 @@
 		A10014 /* RyddeTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014; };
 		A10015 /* Automation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015; };
 		A10016 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016; };
+		A10017 /* HomeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019; };
+		A10018 /* OnboardingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020; };
+		A10019 /* HomeTypeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021; };
+		A10020 /* RoomsStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022; };
+		A10021 /* PainPointsStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023; };
+		A10022 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +50,12 @@
 		B10016 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		B10017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B10018 /* Rydde.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rydde.entitlements; sourceTree = "<group>"; };
+		B10019 /* HomeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeType.swift; sourceTree = "<group>"; };
+		B10020 /* OnboardingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlow.swift; sourceTree = "<group>"; };
+		B10021 /* HomeTypeStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTypeStep.swift; sourceTree = "<group>"; };
+		B10022 /* RoomsStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsStep.swift; sourceTree = "<group>"; };
+		B10023 /* PainPointsStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PainPointsStep.swift; sourceTree = "<group>"; };
+		B10024 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		C10001 /* Rydde.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rydde.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -94,6 +106,7 @@
 				B10013 /* Session.swift */,
 				B10014 /* RyddeTask.swift */,
 				B10015 /* Automation.swift */,
+				B10019 /* HomeType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -130,6 +143,11 @@
 		E10007 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				B10020 /* OnboardingFlow.swift */,
+				B10021 /* HomeTypeStep.swift */,
+				B10022 /* RoomsStep.swift */,
+				B10023 /* PainPointsStep.swift */,
+				B10024 /* FlowLayout.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -255,6 +273,12 @@
 				A10014 /* RyddeTask.swift in Sources */,
 				A10015 /* Automation.swift in Sources */,
 				A10016 /* WelcomeView.swift in Sources */,
+				A10017 /* HomeType.swift in Sources */,
+				A10018 /* OnboardingFlow.swift in Sources */,
+				A10019 /* HomeTypeStep.swift in Sources */,
+				A10020 /* RoomsStep.swift in Sources */,
+				A10021 /* PainPointsStep.swift in Sources */,
+				A10022 /* FlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
