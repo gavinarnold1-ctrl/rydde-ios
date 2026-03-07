@@ -35,6 +35,11 @@
 		A10026 /* TaskLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028; };
 		A10027 /* TaskScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029; };
 		A10028 /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030; };
+		A10029 /* TaskEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031; };
+		A10030 /* HistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032; };
+		A10031 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10033; };
+		A10032 /* ConsistencyCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10034; };
+		A10033 /* TaskLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10035; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +73,11 @@
 		B10028 /* TaskLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskLoadingView.swift; sourceTree = "<group>"; };
 		B10029 /* TaskScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskScreen.swift; sourceTree = "<group>"; };
 		B10030 /* CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionView.swift; sourceTree = "<group>"; };
+		B10031 /* TaskEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEntry.swift; sourceTree = "<group>"; };
+		B10032 /* HistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryScreen.swift; sourceTree = "<group>"; };
+		B10033 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		B10034 /* ConsistencyCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsistencyCalendar.swift; sourceTree = "<group>"; };
+		B10035 /* TaskLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskLog.swift; sourceTree = "<group>"; };
 		C10001 /* Rydde.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rydde.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -119,6 +129,7 @@
 				B10014 /* RyddeTask.swift */,
 				B10015 /* Automation.swift */,
 				B10019 /* HomeType.swift */,
+				B10031 /* TaskEntry.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -196,6 +207,10 @@
 		E10011 /* History */ = {
 			isa = PBXGroup;
 			children = (
+				B10032 /* HistoryScreen.swift */,
+				B10033 /* HistoryViewModel.swift */,
+				B10034 /* ConsistencyCalendar.swift */,
+				B10035 /* TaskLog.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -303,6 +318,11 @@
 				A10026 /* TaskLoadingView.swift in Sources */,
 				A10027 /* TaskScreen.swift in Sources */,
 				A10028 /* CompletionView.swift in Sources */,
+				A10029 /* TaskEntry.swift in Sources */,
+				A10030 /* HistoryScreen.swift in Sources */,
+				A10031 /* HistoryViewModel.swift in Sources */,
+				A10032 /* ConsistencyCalendar.swift in Sources */,
+				A10033 /* TaskLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

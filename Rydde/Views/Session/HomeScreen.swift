@@ -31,16 +31,24 @@ struct HomeScreen: View {
 
     private var mainContent: some View {
         VStack(spacing: 0) {
-            header
-                .padding(.horizontal, RyddeTheme.Spacing.lg)
-                .padding(.top, RyddeTheme.Spacing.md)
+            switch selectedTab {
+            case .clean:
+                VStack(spacing: 0) {
+                    header
+                        .padding(.horizontal, RyddeTheme.Spacing.lg)
+                        .padding(.top, RyddeTheme.Spacing.md)
 
-            Spacer()
+                    Spacer()
 
-            durationSelector
-                .padding(.horizontal, RyddeTheme.Spacing.lg)
+                    durationSelector
+                        .padding(.horizontal, RyddeTheme.Spacing.lg)
 
-            Spacer()
+                    Spacer()
+                }
+
+            case .history:
+                HistoryScreen()
+            }
 
             tabBar
         }
