@@ -127,7 +127,7 @@
 				E10004 /* Services */,
 				E10005 /* Views */,
 				E10009 /* Theme */,
-				E10013 /* Resources */,
+				B10042 /* Assets.xcassets */,
 			);
 			path = Rydde;
 			sourceTree = "<group>";
@@ -240,14 +240,6 @@
 				B10038 /* SettingsViewModel.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		E10013 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B10042 /* Assets.xcassets */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		E10014 /* Components */ = {
