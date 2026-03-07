@@ -13,7 +13,7 @@ struct HomeScreen: View {
 
     var body: some View {
         ZStack {
-            Color(RyddeTheme.Colors.snow)
+            Color(RyddeTheme.Colors.background)
                 .ignoresSafeArea()
 
             if let session = activeSession {
@@ -27,7 +27,7 @@ struct HomeScreen: View {
                     .transition(.opacity)
             }
         }
-        .animation(.easeOut(duration: 0.2), value: activeSession != nil)
+        .animation(.easeOut(duration: 0.5), value: activeSession != nil)
     }
 
     private var mainContent: some View {
@@ -61,15 +61,17 @@ struct HomeScreen: View {
         HStack {
             Text("rydde")
                 .font(RyddeTheme.Fonts.headingSmall)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
             Spacer()
 
             Button(action: { showSettings = true }) {
                 Image(systemName: "gearshape")
                     .font(.system(size: 20))
-                    .foregroundColor(Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel("Settings")
             .fullScreenCover(isPresented: $showSettings) {
                 SettingsScreen()
             }
@@ -82,7 +84,7 @@ struct HomeScreen: View {
         VStack(spacing: RyddeTheme.Spacing.lg) {
             Text("How much time do you have?")
                 .font(RyddeTheme.Fonts.bodyMedium18)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
             LazyVGrid(columns: [
                 GridItem(.flexible(), spacing: RyddeTheme.Spacing.sm),
@@ -100,11 +102,13 @@ struct HomeScreen: View {
                     .foregroundColor(Color(RyddeTheme.Colors.snow))
                     .frame(maxWidth: .infinity)
                     .frame(height: 48)
-                    .background(Color(RyddeTheme.Colors.moss))
+                    .background(Color(RyddeTheme.Colors.accent))
                     .cornerRadius(RyddeTheme.CornerRadius.button)
             }
             .disabled(selectedDuration == nil)
             .opacity(selectedDuration == nil ? 0.4 : 1.0)
+            .accessibilityLabel("Start cleaning session")
+            .accessibilityHint(selectedDuration.map { "Start a \($0) minute session" } ?? "Select a duration first")
         }
     }
 
@@ -115,14 +119,18 @@ struct HomeScreen: View {
             Button(action: { selectedTab = .clean }) {
                 Image(systemName: "house")
                     .font(.system(size: 24))
-                    .foregroundColor(selectedTab == .clean ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(selectedTab == .clean ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.secondaryText))
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel("Clean")
 
             Button(action: { selectedTab = .history }) {
                 Image(systemName: "clock")
                     .font(.system(size: 24))
-                    .foregroundColor(selectedTab == .history ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(selectedTab == .history ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.secondaryText))
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel("History")
         }
         .padding(.bottom, RyddeTheme.Spacing.lg)
     }
@@ -146,20 +154,21 @@ private struct DurationButton: View {
         Button(action: { selected = minutes }) {
             Text(label)
                 .font(RyddeTheme.Fonts.durationPicker)
-                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.primaryText))
                 .frame(maxWidth: .infinity)
                 .frame(height: 80)
-                .background(isSelected ? Color(RyddeTheme.Colors.dew) : Color(RyddeTheme.Colors.frost))
+                .background(isSelected ? Color(RyddeTheme.Colors.selectedBackground) : Color(RyddeTheme.Colors.cardBackground))
                 .cornerRadius(RyddeTheme.CornerRadius.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.card)
                         .stroke(
-                            isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.mist),
+                            isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.border),
                             lineWidth: 1
                         )
                 )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(label) session")
         .animation(.easeOut(duration: 0.3), value: isSelected)
     }
 }

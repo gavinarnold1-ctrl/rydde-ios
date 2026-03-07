@@ -32,7 +32,7 @@ struct TaskScreen: View {
     private var roomLabel: some View {
         Text(task.room.uppercased())
             .font(RyddeTheme.Fonts.bodyMedium11)
-            .foregroundColor(Color(RyddeTheme.Colors.stone))
+            .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
             .kerning(2)
     }
 
@@ -41,15 +41,15 @@ struct TaskScreen: View {
     private var taskTitle: some View {
         Text(task.title)
             .font(RyddeTheme.Fonts.headingTask)
-            .foregroundColor(Color(RyddeTheme.Colors.fjord))
+            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
     }
 
     // MARK: - Task Description
 
     private var taskDescription: some View {
         Text(task.description)
-            .font(RyddeTheme.Fonts.body)
-            .foregroundColor(Color(RyddeTheme.Colors.midnight))
+            .font(RyddeTheme.Fonts.bodyDynamic)
+            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
             .lineSpacing(15 * 0.6)
     }
 
@@ -59,16 +59,16 @@ struct TaskScreen: View {
         VStack(alignment: .leading, spacing: RyddeTheme.Spacing.xs) {
             Text("Why this?")
                 .font(RyddeTheme.Fonts.bodyMedium12)
-                .foregroundColor(Color(RyddeTheme.Colors.moss))
+                .foregroundColor(Color(RyddeTheme.Colors.accent))
 
             Text(task.rationale)
-                .font(RyddeTheme.Fonts.bodySmall)
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .font(RyddeTheme.Fonts.bodySmallDynamic)
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                 .lineSpacing(13 * 0.4)
         }
         .padding(RyddeTheme.Spacing.md)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(RyddeTheme.Colors.meadow))
+        .background(Color(RyddeTheme.Colors.rationaleBackground))
         .cornerRadius(RyddeTheme.CornerRadius.card)
     }
 
@@ -79,8 +79,9 @@ struct TaskScreen: View {
             Spacer()
             Text(formattedTime)
                 .font(RyddeTheme.Fonts.timer)
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                 .monospacedDigit()
+                .accessibilityLabel("Timer: \(timerSeconds / 60) minutes \(timerSeconds % 60) seconds")
             Spacer()
         }
         .padding(.top, RyddeTheme.Spacing.md)
@@ -110,17 +111,20 @@ struct TaskScreen: View {
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 56)
-                .background(Color(RyddeTheme.Colors.moss))
+                .background(Color(RyddeTheme.Colors.accent))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
             }
             .scaleEffect(doneButtonScale)
+            .accessibilityLabel("Mark task as done")
 
             Button(action: onSkip) {
                 Text("Skip this one")
                     .font(RyddeTheme.Fonts.bodySmall14)
-                    .foregroundColor(Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
+                    .frame(minWidth: 44, minHeight: 44)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Skip this task")
         }
         .padding(.horizontal, RyddeTheme.Spacing.lg)
         .padding(.bottom, RyddeTheme.Spacing.lg)

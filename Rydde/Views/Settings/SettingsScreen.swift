@@ -18,20 +18,22 @@ struct SettingsScreen: View {
                 .padding(.horizontal, RyddeTheme.Spacing.lg)
                 .padding(.vertical, RyddeTheme.Spacing.lg)
             }
-            .background(Color(RyddeTheme.Colors.snow).ignoresSafeArea())
+            .background(Color(RyddeTheme.Colors.background).ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Settings")
                         .font(RyddeTheme.Fonts.headingSmall)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: { dismiss() }) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 17, weight: .medium))
-                            .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
+                            .frame(width: 44, height: 44)
                     }
+                    .accessibilityLabel("Close settings")
                 }
             }
             .task {
@@ -60,7 +62,7 @@ struct SettingsScreen: View {
                 memberListContent
             }
 
-            Divider().foregroundColor(Color(RyddeTheme.Colors.mist))
+            Divider().foregroundColor(Color(RyddeTheme.Colors.border))
 
             joinHouseholdContent
         }
@@ -72,12 +74,12 @@ struct SettingsScreen: View {
                 VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
                     Text("Invite someone")
                         .font(RyddeTheme.Fonts.body)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                     HStack {
                         Text(code)
                             .font(RyddeTheme.Fonts.headingMedium)
-                            .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                             .textSelection(.enabled)
 
                         Spacer()
@@ -85,28 +87,33 @@ struct SettingsScreen: View {
                         Button(action: { viewModel.copyInviteCode() }) {
                             Image(systemName: "doc.on.doc")
                                 .font(.system(size: 16))
-                                .foregroundColor(Color(RyddeTheme.Colors.moss))
+                                .foregroundColor(Color(RyddeTheme.Colors.accent))
+                                .frame(width: 44, height: 44)
                         }
+                        .accessibilityLabel("Copy invite code")
 
                         Button(action: { viewModel.showShareSheet = true }) {
                             Image(systemName: "square.and.arrow.up")
                                 .font(.system(size: 16))
-                                .foregroundColor(Color(RyddeTheme.Colors.moss))
+                                .foregroundColor(Color(RyddeTheme.Colors.accent))
+                                .frame(width: 44, height: 44)
                         }
+                        .accessibilityLabel("Share invite code")
                     }
                     .padding(RyddeTheme.Spacing.md)
-                    .background(Color(RyddeTheme.Colors.frost))
+                    .background(Color(RyddeTheme.Colors.surface))
                     .cornerRadius(RyddeTheme.CornerRadius.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.card)
-                            .stroke(Color(RyddeTheme.Colors.mist), lineWidth: 1)
+                            .stroke(Color(RyddeTheme.Colors.border), lineWidth: 1)
                     )
                 }
             } else {
                 Button(action: { Task { await viewModel.generateInviteCode() } }) {
                     Text("Invite someone")
                         .font(RyddeTheme.Fonts.body)
-                        .foregroundColor(Color(RyddeTheme.Colors.moss))
+                        .foregroundColor(Color(RyddeTheme.Colors.accent))
+                        .frame(minHeight: 44)
                 }
             }
         }
@@ -123,25 +130,26 @@ struct SettingsScreen: View {
                 HStack {
                     Text(member.displayName)
                         .font(RyddeTheme.Fonts.body)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                     Spacer()
 
                     Text(member.joinedLabel)
                         .font(.custom("DMSans-Regular", size: 12))
-                        .foregroundColor(Color(RyddeTheme.Colors.stone))
+                        .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                 }
+                .accessibilityElement(children: .combine)
             }
 
             if let code = viewModel.inviteCode {
                 HStack {
                     Text("Invite code:")
                         .font(RyddeTheme.Fonts.bodySmall)
-                        .foregroundColor(Color(RyddeTheme.Colors.stone))
+                        .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
 
                     Text(code)
                         .font(RyddeTheme.Fonts.bodyMedium)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                         .textSelection(.enabled)
 
                     Spacer()
@@ -149,8 +157,10 @@ struct SettingsScreen: View {
                     Button(action: { viewModel.showShareSheet = true }) {
                         Image(systemName: "square.and.arrow.up")
                             .font(.system(size: 14))
-                            .foregroundColor(Color(RyddeTheme.Colors.moss))
+                            .foregroundColor(Color(RyddeTheme.Colors.accent))
+                            .frame(width: 44, height: 44)
                     }
+                    .accessibilityLabel("Share invite code")
                 }
                 .padding(.top, RyddeTheme.Spacing.xs)
             }
@@ -166,17 +176,18 @@ struct SettingsScreen: View {
         VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
             Text("Join a household")
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
             HStack(spacing: RyddeTheme.Spacing.sm) {
                 TextField("Enter code", text: $viewModel.joinCode)
                     .font(RyddeTheme.Fonts.body)
+                    .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                     .padding(RyddeTheme.Spacing.sm)
-                    .background(Color(RyddeTheme.Colors.frost))
+                    .background(Color(RyddeTheme.Colors.surface))
                     .cornerRadius(RyddeTheme.CornerRadius.button)
                     .overlay(
                         RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
-                            .stroke(Color(RyddeTheme.Colors.mist), lineWidth: 1)
+                            .stroke(Color(RyddeTheme.Colors.border), lineWidth: 1)
                     )
 
                 Button(action: { Task { await viewModel.joinHousehold() } }) {
@@ -184,12 +195,13 @@ struct SettingsScreen: View {
                         .font(RyddeTheme.Fonts.buttonLabel)
                         .foregroundColor(Color(RyddeTheme.Colors.snow))
                         .padding(.horizontal, RyddeTheme.Spacing.md)
-                        .frame(height: 36)
-                        .background(Color(RyddeTheme.Colors.moss))
+                        .frame(height: 44)
+                        .background(Color(RyddeTheme.Colors.accent))
                         .cornerRadius(RyddeTheme.CornerRadius.button)
                 }
                 .disabled(viewModel.joinCode.trimmingCharacters(in: .whitespaces).isEmpty)
                 .opacity(viewModel.joinCode.trimmingCharacters(in: .whitespaces).isEmpty ? 0.4 : 1.0)
+                .accessibilityLabel("Join household")
             }
 
             if let error = viewModel.joinError {
@@ -207,9 +219,9 @@ struct SettingsScreen: View {
             Toggle(isOn: $viewModel.reminderEnabled) {
                 Text("Daily reminder")
                     .font(RyddeTheme.Fonts.body)
-                    .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                    .foregroundColor(Color(RyddeTheme.Colors.primaryText))
             }
-            .tint(Color(RyddeTheme.Colors.moss))
+            .tint(Color(RyddeTheme.Colors.accent))
             .onChange(of: viewModel.reminderEnabled) { _, enabled in
                 if enabled {
                     Task { await viewModel.onReminderEnabled() }
@@ -220,20 +232,18 @@ struct SettingsScreen: View {
 
             if viewModel.reminderEnabled {
                 VStack(alignment: .leading, spacing: RyddeTheme.Spacing.md) {
-                    // Time picker
                     DatePicker("Time", selection: $viewModel.reminderTime, displayedComponents: .hourAndMinute)
                         .font(RyddeTheme.Fonts.body)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
-                        .tint(Color(RyddeTheme.Colors.moss))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
+                        .tint(Color(RyddeTheme.Colors.accent))
                         .onChange(of: viewModel.reminderTime) { _, _ in
                             Task { await viewModel.saveAutomation() }
                         }
 
-                    // Duration picker
                     VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
                         Text("Duration")
                             .font(RyddeTheme.Fonts.body)
-                            .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                         HStack(spacing: RyddeTheme.Spacing.sm) {
                             ForEach([10, 15, 30, 60], id: \.self) { mins in
@@ -248,11 +258,10 @@ struct SettingsScreen: View {
                         }
                     }
 
-                    // Day selector
                     VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
                         Text("Days")
                             .font(RyddeTheme.Fonts.body)
-                            .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                         HStack(spacing: RyddeTheme.Spacing.sm) {
                             ForEach(DayOfWeek.allCases) { day in
@@ -280,13 +289,13 @@ struct SettingsScreen: View {
             HStack {
                 Text("Display name")
                     .font(RyddeTheme.Fonts.body)
-                    .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                    .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                 Spacer()
 
                 TextField("Name", text: $viewModel.displayName)
                     .font(RyddeTheme.Fonts.body)
-                    .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                    .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                     .multilineTextAlignment(.trailing)
                     .onSubmit { Task { await viewModel.updateDisplayName() } }
             }
@@ -295,7 +304,9 @@ struct SettingsScreen: View {
                 Text("Sign out")
                     .font(RyddeTheme.Fonts.body)
                     .foregroundColor(.red)
+                    .frame(minHeight: 44)
             }
+            .accessibilityLabel("Sign out of your account")
         }
     }
 
@@ -305,19 +316,19 @@ struct SettingsScreen: View {
         SettingsSection(title: "ABOUT") {
             Text("rydde v1.0")
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
             Text("an oversikt product")
                 .font(RyddeTheme.Fonts.bodySmall)
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
 
             Link("Privacy Policy", destination: URL(string: "https://rydde.app/privacy")!)
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.moss))
+                .foregroundColor(Color(RyddeTheme.Colors.accent))
 
             Link("Terms of Service", destination: URL(string: "https://rydde.app/terms")!)
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.moss))
+                .foregroundColor(Color(RyddeTheme.Colors.accent))
         }
     }
 }
@@ -332,7 +343,7 @@ struct SettingsSection<Content: View>: View {
         VStack(alignment: .leading, spacing: RyddeTheme.Spacing.md) {
             Text(title)
                 .font(RyddeTheme.Fonts.bodyMedium11)
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                 .kerning(2)
 
             VStack(alignment: .leading, spacing: RyddeTheme.Spacing.md) {
@@ -340,11 +351,11 @@ struct SettingsSection<Content: View>: View {
             }
             .padding(RyddeTheme.Spacing.md)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(RyddeTheme.Colors.frost))
+            .background(Color(RyddeTheme.Colors.cardBackground))
             .cornerRadius(RyddeTheme.CornerRadius.card)
             .overlay(
                 RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.card)
-                    .stroke(Color(RyddeTheme.Colors.mist), lineWidth: 1)
+                    .stroke(Color(RyddeTheme.Colors.border), lineWidth: 1)
             )
         }
     }
@@ -358,15 +369,17 @@ struct SettingsRow: View {
         HStack {
             Text(label)
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
             Spacer()
             Text(value)
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .medium))
-                .foregroundColor(Color(RyddeTheme.Colors.mist))
+                .foregroundColor(Color(RyddeTheme.Colors.border))
         }
+        .frame(minHeight: 44)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -379,17 +392,18 @@ private struct DurationChip: View {
         Button(action: onTap) {
             Text(label)
                 .font(RyddeTheme.Fonts.bodySmall)
-                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.stone))
+                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.secondaryText))
                 .padding(.horizontal, RyddeTheme.Spacing.sm + 2)
                 .padding(.vertical, RyddeTheme.Spacing.xs + 2)
-                .background(isSelected ? Color(RyddeTheme.Colors.dew) : Color(RyddeTheme.Colors.snow))
+                .background(isSelected ? Color(RyddeTheme.Colors.selectedBackground) : Color(RyddeTheme.Colors.surface))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
                 .overlay(
                     RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
-                        .stroke(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.mist), lineWidth: 1)
+                        .stroke(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.border), lineWidth: 1)
                 )
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
     }
 }
 
@@ -402,16 +416,17 @@ private struct DayCircle: View {
         Button(action: onTap) {
             Text(day.shortLabel)
                 .font(RyddeTheme.Fonts.bodySmall)
-                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.snow) : Color(RyddeTheme.Colors.stone))
-                .frame(width: 36, height: 36)
-                .background(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.snow))
+                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.snow) : Color(RyddeTheme.Colors.secondaryText))
+                .frame(width: 44, height: 44)
+                .background(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.surface))
                 .clipShape(Circle())
                 .overlay(
                     Circle()
-                        .stroke(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.mist), lineWidth: 1)
+                        .stroke(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.border), lineWidth: 1)
                 )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(day.rawValue), \(isSelected ? "selected" : "not selected")")
     }
 }
 

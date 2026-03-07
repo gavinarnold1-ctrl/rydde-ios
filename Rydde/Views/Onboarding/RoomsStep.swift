@@ -19,7 +19,7 @@ struct RoomsStep: View {
 
                     Text("What rooms do you have?")
                         .font(RyddeTheme.Fonts.headingMedium)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                     FlowLayout(spacing: RyddeTheme.Spacing.sm) {
                         ForEach(availableRooms, id: \.self) { room in
@@ -55,8 +55,10 @@ struct RoomsStep: View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
                 .font(.system(size: 17, weight: .medium))
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
+                .frame(width: 44, height: 44)
         }
+        .accessibilityLabel("Back")
     }
 
     private var addRoomChip: some View {
@@ -66,23 +68,25 @@ struct RoomsStep: View {
         }) {
             Text("+ Add room")
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.moss))
+                .foregroundColor(Color(RyddeTheme.Colors.accent))
                 .padding(.horizontal, RyddeTheme.Spacing.md)
                 .padding(.vertical, RyddeTheme.Spacing.sm)
-                .background(Color(RyddeTheme.Colors.frost))
+                .background(Color(RyddeTheme.Colors.cardBackground))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
                 .overlay(
                     RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
-                        .stroke(Color(RyddeTheme.Colors.mist), lineWidth: 1)
+                        .stroke(Color(RyddeTheme.Colors.border), lineWidth: 1)
                 )
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
     }
 
     private var customRoomInput: some View {
         HStack(spacing: RyddeTheme.Spacing.xs) {
             TextField("Room name", text: $customRoomName)
                 .font(RyddeTheme.Fonts.body)
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                 .focused($isTextFieldFocused)
                 .onSubmit { addCustomRoom() }
                 .submitLabel(.done)
@@ -90,9 +94,11 @@ struct RoomsStep: View {
             Button(action: addCustomRoom) {
                 Image(systemName: "checkmark")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(Color(RyddeTheme.Colors.moss))
+                    .foregroundColor(Color(RyddeTheme.Colors.accent))
+                    .frame(width: 44, height: 44)
             }
             .disabled(customRoomName.trimmingCharacters(in: .whitespaces).isEmpty)
+            .accessibilityLabel("Confirm room name")
 
             Button(action: {
                 isAddingCustomRoom = false
@@ -100,18 +106,20 @@ struct RoomsStep: View {
             }) {
                 Image(systemName: "xmark")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel("Cancel adding room")
         }
         .padding(.horizontal, RyddeTheme.Spacing.md)
         .padding(.vertical, RyddeTheme.Spacing.sm)
-        .background(Color(RyddeTheme.Colors.frost))
+        .background(Color(RyddeTheme.Colors.cardBackground))
         .cornerRadius(RyddeTheme.CornerRadius.button)
         .overlay(
             RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
-                .stroke(Color(RyddeTheme.Colors.moss), lineWidth: 1)
+                .stroke(Color(RyddeTheme.Colors.accent), lineWidth: 1)
         )
-        .frame(width: 180)
+        .frame(width: 200)
     }
 
     private var nextButton: some View {
@@ -121,13 +129,14 @@ struct RoomsStep: View {
                 .foregroundColor(Color(RyddeTheme.Colors.snow))
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
-                .background(Color(RyddeTheme.Colors.moss))
+                .background(Color(RyddeTheme.Colors.accent))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
         }
         .disabled(selectedRooms.isEmpty)
         .opacity(selectedRooms.isEmpty ? 0.4 : 1.0)
         .padding(.horizontal, RyddeTheme.Spacing.lg)
         .padding(.bottom, RyddeTheme.Spacing.lg)
+        .accessibilityLabel("Next step")
     }
 
     private func toggleRoom(_ room: String) {
@@ -157,20 +166,21 @@ private struct RoomChip: View {
         Button(action: onTap) {
             Text(label)
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.primaryText))
                 .padding(.horizontal, RyddeTheme.Spacing.md)
                 .padding(.vertical, RyddeTheme.Spacing.sm)
-                .background(isSelected ? Color(RyddeTheme.Colors.dew) : Color(RyddeTheme.Colors.frost))
+                .background(isSelected ? Color(RyddeTheme.Colors.selectedBackground) : Color(RyddeTheme.Colors.cardBackground))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
                 .overlay(
                     RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
                         .stroke(
-                            isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.mist),
+                            isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.border),
                             lineWidth: 1
                         )
                 )
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
         .animation(.easeOut(duration: 0.3), value: isSelected)
     }
 }

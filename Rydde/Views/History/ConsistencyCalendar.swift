@@ -28,6 +28,8 @@ struct ConsistencyCalendar: View {
                     }
                 }
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Consistency calendar for \(monthYearString)")
     }
 
     // MARK: - Month Header
@@ -36,7 +38,7 @@ struct ConsistencyCalendar: View {
         HStack {
             Text(monthYearString)
                 .font(RyddeTheme.Fonts.bodyMedium)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
             Spacer()
         }
     }
@@ -48,7 +50,7 @@ struct ConsistencyCalendar: View {
             ForEach(dayLabels, id: \.self) { label in
                 Text(label)
                     .font(RyddeTheme.Fonts.caption)
-                    .foregroundColor(Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                     .frame(height: 16)
             }
         }
@@ -70,7 +72,7 @@ struct ConsistencyCalendar: View {
         switch day {
         case .empty:
             Color.clear.frame(height: 14)
-        case .day(let date, let state):
+        case .day(_, let state):
             ZStack {
                 if state == .today || state == .completedToday {
                     Circle()
@@ -89,9 +91,9 @@ struct ConsistencyCalendar: View {
     private func circleFill(for state: DayState) -> Color {
         switch state {
         case .completed, .completedToday:
-            return Color(RyddeTheme.Colors.moss)
+            return Color(RyddeTheme.Colors.accent)
         case .noSession, .today:
-            return Color(RyddeTheme.Colors.frost)
+            return Color(RyddeTheme.Colors.cardBackground)
         case .future:
             return .clear
         }

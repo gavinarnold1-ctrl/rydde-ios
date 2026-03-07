@@ -27,11 +27,11 @@ struct PainPointsStep: View {
                     VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
                         Text("What do you struggle\nwith most?")
                             .font(RyddeTheme.Fonts.headingMedium)
-                            .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                         Text("This helps Rydde prioritize what matters to you.")
                             .font(RyddeTheme.Fonts.body)
-                            .foregroundColor(Color(RyddeTheme.Colors.stone))
+                            .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                     }
 
                     FlowLayout(spacing: RyddeTheme.Spacing.sm) {
@@ -62,18 +62,19 @@ struct PainPointsStep: View {
         Button(action: onBack) {
             Image(systemName: "chevron.left")
                 .font(.system(size: 17, weight: .medium))
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
+                .frame(width: 44, height: 44)
         }
+        .accessibilityLabel("Back")
     }
 
     private var getStartedButton: some View {
         Button(action: onComplete) {
             if isSubmitting {
-                ProgressView()
-                    .tint(Color(RyddeTheme.Colors.snow))
+                ArcSpinner(size: 24)
                     .frame(maxWidth: .infinity)
                     .frame(height: 48)
-                    .background(Color(RyddeTheme.Colors.moss))
+                    .background(Color(RyddeTheme.Colors.accent))
                     .cornerRadius(RyddeTheme.CornerRadius.button)
             } else {
                 Text("Get started")
@@ -81,13 +82,14 @@ struct PainPointsStep: View {
                     .foregroundColor(Color(RyddeTheme.Colors.snow))
                     .frame(maxWidth: .infinity)
                     .frame(height: 48)
-                    .background(Color(RyddeTheme.Colors.moss))
+                    .background(Color(RyddeTheme.Colors.accent))
                     .cornerRadius(RyddeTheme.CornerRadius.button)
             }
         }
         .disabled(isSubmitting)
         .padding(.horizontal, RyddeTheme.Spacing.lg)
         .padding(.bottom, RyddeTheme.Spacing.lg)
+        .accessibilityLabel(isSubmitting ? "Setting up your home" : "Get started")
     }
 
     private func togglePainPoint(_ point: String) {
@@ -108,20 +110,21 @@ private struct PainPointChip: View {
         Button(action: onTap) {
             Text(label)
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.primaryText))
                 .padding(.horizontal, RyddeTheme.Spacing.md)
                 .padding(.vertical, RyddeTheme.Spacing.sm)
-                .background(isSelected ? Color(RyddeTheme.Colors.dew) : Color(RyddeTheme.Colors.frost))
+                .background(isSelected ? Color(RyddeTheme.Colors.selectedBackground) : Color(RyddeTheme.Colors.cardBackground))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
                 .overlay(
                     RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
                         .stroke(
-                            isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.mist),
+                            isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.border),
                             lineWidth: 1
                         )
                 )
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
         .animation(.easeOut(duration: 0.3), value: isSelected)
     }
 }

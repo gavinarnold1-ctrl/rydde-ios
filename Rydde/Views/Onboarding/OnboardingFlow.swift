@@ -17,7 +17,7 @@ struct OnboardingFlow: View {
             progressBar
             stepContent
         }
-        .background(Color(RyddeTheme.Colors.snow).ignoresSafeArea())
+        .background(Color(RyddeTheme.Colors.background).ignoresSafeArea())
     }
 
     // MARK: - Progress Bar
@@ -30,12 +30,13 @@ struct OnboardingFlow: View {
                     .frame(height: 2)
 
                 Rectangle()
-                    .fill(Color(RyddeTheme.Colors.moss))
+                    .fill(Color(RyddeTheme.Colors.accent))
                     .frame(width: geometry.size.width * CGFloat(currentStep + 1) / CGFloat(totalSteps), height: 2)
                     .animation(.easeOut(duration: 0.3), value: currentStep)
             }
         }
         .frame(height: 2)
+        .accessibilityLabel("Step \(currentStep + 1) of \(totalSteps)")
     }
 
     // MARK: - Step Content

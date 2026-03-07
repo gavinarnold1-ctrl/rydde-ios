@@ -25,10 +25,11 @@ struct SessionFlow: View {
     @State private var sessionId: UUID?
     @State private var timerSeconds = 0
     @State private var completedTaskTitle: String?
+    @State private var loadingStartTime: Date?
 
     var body: some View {
         ZStack {
-            Color(RyddeTheme.Colors.snow)
+            Color(RyddeTheme.Colors.background)
                 .ignoresSafeArea()
 
             switch phase {
@@ -69,16 +70,34 @@ struct SessionFlow: View {
     }
 
     private func fetchTask() async {
+        loadingStartTime = Date()
+
+        // Start a timeout monitor
+        let timeoutTask = Task {
+            try await Task.sleep(nanoseconds: 10_000_000_000) // 10s
+            if phase == .loading {
+                // Show "taking longer" message but keep waiting
+            }
+            try await Task.sleep(nanoseconds: 5_000_000_000) // another 5s (15s total)
+            if phase == .loading {
+                phase = .error("Taking longer than usual.\nWant to try again?")
+            }
+        }
+
         do {
             let response = try await TaskService.shared.generateTask(
                 durationMinutes: state.durationMinutes
             )
+            timeoutTask.cancel()
             sessionId = response.sessionId
             generatedTask = response.task
             phase = .active
             startTimer()
         } catch {
-            phase = .error("Couldn't generate a task right now.\nTry again?")
+            timeoutTask.cancel()
+            if phase == .loading {
+                phase = .error("Couldn't connect. Check your connection and try again.")
+            }
         }
     }
 
@@ -135,8 +154,8 @@ struct TaskErrorView: View {
     var body: some View {
         VStack(spacing: RyddeTheme.Spacing.lg) {
             Text(message)
-                .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .font(RyddeTheme.Fonts.bodyDynamic)
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                 .multilineTextAlignment(.center)
 
             Button(action: onRetry) {
@@ -144,16 +163,19 @@ struct TaskErrorView: View {
                     .font(RyddeTheme.Fonts.buttonLabel)
                     .foregroundColor(Color(RyddeTheme.Colors.snow))
                     .frame(width: 200, height: 48)
-                    .background(Color(RyddeTheme.Colors.moss))
+                    .background(Color(RyddeTheme.Colors.accent))
                     .cornerRadius(RyddeTheme.CornerRadius.button)
             }
+            .accessibilityLabel("Retry task generation")
 
             Button(action: onCancel) {
                 Text("Go back")
                     .font(RyddeTheme.Fonts.bodySmall14)
-                    .foregroundColor(Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
+                    .frame(minWidth: 44, minHeight: 44)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Cancel and go back")
         }
     }
 }

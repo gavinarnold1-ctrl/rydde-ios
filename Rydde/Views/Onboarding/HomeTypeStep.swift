@@ -10,7 +10,7 @@ struct HomeTypeStep: View {
                 VStack(alignment: .leading, spacing: RyddeTheme.Spacing.lg) {
                     Text("What kind of space\ndo you live in?")
                         .font(RyddeTheme.Fonts.headingMedium)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                         .padding(.top, RyddeTheme.Spacing.xl)
 
                     VStack(spacing: RyddeTheme.Spacing.sm) {
@@ -37,13 +37,14 @@ struct HomeTypeStep: View {
                 .foregroundColor(Color(RyddeTheme.Colors.snow))
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
-                .background(Color(RyddeTheme.Colors.moss))
+                .background(Color(RyddeTheme.Colors.accent))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
         }
         .disabled(selectedType == nil)
         .opacity(selectedType == nil ? 0.4 : 1.0)
         .padding(.horizontal, RyddeTheme.Spacing.lg)
         .padding(.bottom, RyddeTheme.Spacing.lg)
+        .accessibilityLabel("Next step")
     }
 }
 
@@ -56,20 +57,21 @@ private struct HomeTypeCard: View {
         Button(action: onTap) {
             Text(type.label)
                 .font(RyddeTheme.Fonts.bodyMedium)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.primaryText))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(RyddeTheme.Spacing.md)
-                .background(isSelected ? Color(RyddeTheme.Colors.dew) : Color(RyddeTheme.Colors.frost))
+                .background(isSelected ? Color(RyddeTheme.Colors.selectedBackground) : Color(RyddeTheme.Colors.cardBackground))
                 .cornerRadius(RyddeTheme.CornerRadius.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.card)
                         .stroke(
-                            isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.mist),
+                            isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.border),
                             lineWidth: 1
                         )
                 )
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
         .animation(.easeOut(duration: 0.3), value: isSelected)
     }
 }

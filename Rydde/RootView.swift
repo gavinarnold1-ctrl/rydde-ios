@@ -36,11 +36,11 @@ struct RootView: View {
 
     private var loadingView: some View {
         ZStack {
-            Color(RyddeTheme.Colors.snow)
+            Color(RyddeTheme.Colors.fjord)
                 .ignoresSafeArea()
             Text("rydde")
                 .font(RyddeTheme.Fonts.headingLarge)
-                .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                .foregroundColor(Color(RyddeTheme.Colors.snow))
         }
     }
 
@@ -65,5 +65,3 @@ struct MeResponse: Codable {
     let user: User
     let household: Household?
 }
-
-

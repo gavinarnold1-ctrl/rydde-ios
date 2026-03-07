@@ -8,7 +8,7 @@ struct WelcomeView: View {
 
     var body: some View {
         ZStack {
-            Color(RyddeTheme.Colors.snow)
+            Color(RyddeTheme.Colors.background)
                 .ignoresSafeArea()
 
             VStack(spacing: RyddeTheme.Spacing.xxl) {
@@ -17,11 +17,11 @@ struct WelcomeView: View {
                 VStack(spacing: RyddeTheme.Spacing.sm) {
                     Text("rydde")
                         .font(RyddeTheme.Fonts.headingLarge)
-                        .foregroundColor(Color(RyddeTheme.Colors.fjord))
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
 
                     Text("less thinking, more living")
                         .font(RyddeTheme.Fonts.body)
-                        .foregroundColor(Color(RyddeTheme.Colors.stone))
+                        .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                 }
 
                 Spacer()

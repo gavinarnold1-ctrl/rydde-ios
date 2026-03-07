@@ -8,6 +8,8 @@ final class HistoryViewModel: ObservableObject {
     @Published var selectedRoom: RoomFilter? = nil
     @Published var displayedMonth: Date = Date()
     @Published var isLoadingMore = false
+    @Published var isInitialLoading = false
+    @Published var error: String?
 
     private var currentPage = 1
     private var totalPages = 1
@@ -16,8 +18,16 @@ final class HistoryViewModel: ObservableObject {
     func initialLoad() async {
         guard !hasLoaded else { return }
         hasLoaded = true
+        isInitialLoading = true
+        error = nil
         await loadCalendar()
         await loadTasks(reset: true)
+        isInitialLoading = false
+    }
+
+    func retry() async {
+        hasLoaded = false
+        await initialLoad()
     }
 
     func loadMoreIfNeeded() {
@@ -62,6 +72,7 @@ final class HistoryViewModel: ObservableObject {
         do {
             let response: TaskListResponse = try await APIService.shared.get(endpoint: endpoint)
             totalPages = response.totalPages
+            error = nil
 
             if reset {
                 tasks = response.tasks
@@ -71,7 +82,9 @@ final class HistoryViewModel: ObservableObject {
 
             buildRoomFilters()
         } catch {
-            // Keep existing data on error
+            if reset && tasks.isEmpty {
+                self.error = "Couldn't connect. Check your connection and try again."
+            }
         }
 
         isLoadingMore = false

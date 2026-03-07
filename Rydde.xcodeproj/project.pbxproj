@@ -44,6 +44,9 @@
 		A10035 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10037; };
 		A10036 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10038; };
 		A10037 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10039; };
+		A10038 /* ArcSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10040; };
+		A10039 /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10041; };
+		A10040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10042; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +89,9 @@
 		B10037 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		B10038 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B10039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B10040 /* ArcSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcSpinner.swift; sourceTree = "<group>"; };
+		B10041 /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
+		B10042 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C10001 /* Rydde.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rydde.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -121,6 +127,7 @@
 				E10004 /* Services */,
 				E10005 /* Views */,
 				E10009 /* Theme */,
+				E10013 /* Resources */,
 			);
 			path = Rydde;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 				E10008 /* Session */,
 				E10011 /* History */,
 				E10012 /* Settings */,
+				E10014 /* Components */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -234,6 +242,23 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		E10013 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B10042 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E10014 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B10040 /* ArcSpinner.swift */,
+				B10041 /* NetworkErrorView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -292,6 +317,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10040 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +365,8 @@
 				A10035 /* SettingsScreen.swift in Sources */,
 				A10036 /* SettingsViewModel.swift in Sources */,
 				A10037 /* AppDelegate.swift in Sources */,
+				A10038 /* ArcSpinner.swift in Sources */,
+				A10039 /* NetworkErrorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

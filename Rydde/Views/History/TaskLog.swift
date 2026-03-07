@@ -25,8 +25,7 @@ struct TaskLog: View {
                     }
 
                     if isLoading {
-                        ProgressView()
-                            .tint(Color(RyddeTheme.Colors.moss))
+                        ArcSpinner(size: 24)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, RyddeTheme.Spacing.md)
                     }
@@ -64,7 +63,7 @@ struct TaskLog: View {
         VStack(spacing: RyddeTheme.Spacing.sm) {
             Text("No tasks yet")
                 .font(RyddeTheme.Fonts.body)
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, RyddeTheme.Spacing.xxl)
@@ -82,13 +81,14 @@ private struct FilterChip: View {
         Button(action: onTap) {
             Text(label)
                 .font(RyddeTheme.Fonts.bodySmall)
-                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.moss) : Color(RyddeTheme.Colors.stone))
+                .foregroundColor(isSelected ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.secondaryText))
                 .padding(.horizontal, RyddeTheme.Spacing.md)
                 .padding(.vertical, RyddeTheme.Spacing.xs + 2)
-                .background(isSelected ? Color(RyddeTheme.Colors.dew) : Color(RyddeTheme.Colors.frost))
+                .background(isSelected ? Color(RyddeTheme.Colors.selectedBackground) : Color(RyddeTheme.Colors.cardBackground))
                 .cornerRadius(RyddeTheme.CornerRadius.button)
         }
         .buttonStyle(.plain)
+        .frame(minHeight: 44)
         .animation(.easeOut(duration: 0.3), value: isSelected)
     }
 }
@@ -103,28 +103,28 @@ private struct TaskEntryCard: View {
             VStack(alignment: .leading, spacing: RyddeTheme.Spacing.xs) {
                 Text(task.room.uppercased())
                     .font(RyddeTheme.Fonts.bodyMedium11)
-                    .foregroundColor(Color(RyddeTheme.Colors.stone))
+                    .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                     .kerning(2)
 
                 Text(task.title)
                     .font(RyddeTheme.Fonts.bodyMedium)
-                    .foregroundColor(task.isSkipped ? Color(RyddeTheme.Colors.stone) : Color(RyddeTheme.Colors.fjord))
+                    .foregroundColor(task.isSkipped ? Color(RyddeTheme.Colors.secondaryText) : Color(RyddeTheme.Colors.primaryText))
                     .lineLimit(2)
 
                 HStack(spacing: RyddeTheme.Spacing.sm) {
                     if task.isSkipped {
                         Text("Skipped")
                             .font(RyddeTheme.Fonts.caption)
-                            .foregroundColor(Color(RyddeTheme.Colors.stone))
+                            .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
                     }
 
                     if let duration = task.durationMinutes {
                         Text(durationLabel(duration))
                             .font(.custom("DMSans-Regular", size: 10))
-                            .foregroundColor(Color(RyddeTheme.Colors.moss))
+                            .foregroundColor(Color(RyddeTheme.Colors.accent))
                             .padding(.horizontal, RyddeTheme.Spacing.sm)
                             .padding(.vertical, 2)
-                            .background(Color(RyddeTheme.Colors.meadow))
+                            .background(Color(RyddeTheme.Colors.rationaleBackground))
                             .cornerRadius(10)
                     }
                 }
@@ -134,15 +134,16 @@ private struct TaskEntryCard: View {
 
             Text(relativeDate(task.completedAt ?? task.createdAt))
                 .font(.custom("DMSans-Regular", size: 12))
-                .foregroundColor(Color(RyddeTheme.Colors.stone))
+                .foregroundColor(Color(RyddeTheme.Colors.secondaryText))
         }
         .padding(RyddeTheme.Spacing.md)
-        .background(Color(RyddeTheme.Colors.frost))
+        .background(Color(RyddeTheme.Colors.cardBackground))
         .cornerRadius(RyddeTheme.CornerRadius.card)
         .overlay(
             RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.card)
-                .stroke(Color(RyddeTheme.Colors.mist), lineWidth: 1)
+                .stroke(Color(RyddeTheme.Colors.border), lineWidth: 1)
         )
+        .accessibilityElement(children: .combine)
     }
 
     private func durationLabel(_ minutes: Int) -> String {

@@ -25,21 +25,21 @@ enum RyddeTheme {
         static let darkMoss = UIColor(hex: 0x5A9A52)
         static let darkSage = UIColor(hex: 0x7BA87A)
 
-        // Adaptive colors
+        // Adaptive colors — respect system setting, no manual toggle in V1
         static let background = UIColor { traits in
             traits.userInterfaceStyle == .dark ? darkBg : snow
         }
 
         static let cardBackground = UIColor { traits in
-            traits.userInterfaceStyle == .dark ? darkCard : UIColor.white
+            traits.userInterfaceStyle == .dark ? darkCard : frost
         }
 
         static let primaryText = UIColor { traits in
-            traits.userInterfaceStyle == .dark ? UIColor.white : midnight
+            traits.userInterfaceStyle == .dark ? snow : fjord
         }
 
         static let secondaryText = UIColor { traits in
-            traits.userInterfaceStyle == .dark ? darkSage : stone
+            traits.userInterfaceStyle == .dark ? mist : stone
         }
 
         static let accent = UIColor { traits in
@@ -48,6 +48,18 @@ enum RyddeTheme {
 
         static let border = UIColor { traits in
             traits.userInterfaceStyle == .dark ? darkCard : mist
+        }
+
+        static let surface = UIColor { traits in
+            traits.userInterfaceStyle == .dark ? darkBg : snow
+        }
+
+        static let selectedBackground = UIColor { traits in
+            traits.userInterfaceStyle == .dark ? UIColor(hex: 0x2A5A34) : dew
+        }
+
+        static let rationaleBackground = UIColor { traits in
+            traits.userInterfaceStyle == .dark ? UIColor(hex: 0x1A3520) : meadow
         }
     }
 
@@ -70,6 +82,10 @@ enum RyddeTheme {
         static let buttonLabel = Font.custom("DMSans-SemiBold", size: 17)
         static let timer = Font.custom("DMSans-Regular", size: 48)
         static let durationPicker = Font.custom("DMSans-Medium", size: 24)
+
+        // Dynamic Type body variants
+        static let bodyDynamic = Font.custom("DMSans-Regular", size: 15, relativeTo: .body)
+        static let bodySmallDynamic = Font.custom("DMSans-Regular", size: 13, relativeTo: .footnote)
     }
 
     // MARK: - Spacing
