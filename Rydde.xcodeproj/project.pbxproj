@@ -47,6 +47,9 @@
 		A10038 /* ArcSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10040; };
 		A10039 /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10041; };
 		A10040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10042; };
+		A10041 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B10043; };
+		A10042 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B10044; };
+		A10043 /* DMSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B10045; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +95,9 @@
 		B10040 /* ArcSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcSpinner.swift; sourceTree = "<group>"; };
 		B10041 /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
 		B10042 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10043 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
+		B10044 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
+		B10045 /* DMSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		C10001 /* Rydde.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rydde.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -127,6 +133,7 @@
 				E10004 /* Services */,
 				E10005 /* Views */,
 				E10009 /* Theme */,
+				E10015 /* Fonts */,
 				B10042 /* Assets.xcassets */,
 			);
 			path = Rydde;
@@ -251,6 +258,16 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		E10015 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B10043 /* DMSans-Regular.ttf */,
+				B10044 /* DMSans-Medium.ttf */,
+				B10045 /* DMSans-SemiBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -310,6 +327,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10040 /* Assets.xcassets in Resources */,
+				A10041 /* DMSans-Regular.ttf in Resources */,
+				A10042 /* DMSans-Medium.ttf in Resources */,
+				A10043 /* DMSans-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

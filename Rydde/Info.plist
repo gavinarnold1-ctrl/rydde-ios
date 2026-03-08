@@ -40,5 +40,11 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>DMSans-Regular.ttf</string>
+		<string>DMSans-Medium.ttf</string>
+		<string>DMSans-SemiBold.ttf</string>
+	</array>
 </dict>
 </plist>
