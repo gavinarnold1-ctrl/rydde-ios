@@ -61,6 +61,10 @@ final class APIService {
         return try await request(method: "PATCH", endpoint: endpoint, body: body)
     }
 
+    func put<T: Decodable, B: Encodable>(endpoint: String, body: B) async throws -> T {
+        return try await request(method: "PUT", endpoint: endpoint, body: body)
+    }
+
     func delete<T: Decodable>(endpoint: String) async throws -> T {
         return try await request(method: "DELETE", endpoint: endpoint)
     }
