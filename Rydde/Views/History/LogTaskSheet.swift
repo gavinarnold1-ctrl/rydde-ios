@@ -16,7 +16,6 @@ struct LogTaskSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: RyddeTheme.Spacing.lg) {
-                    // Room picker
                     VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
                         Text("Room")
                             .font(RyddeTheme.Fonts.bodyMedium11)
@@ -29,28 +28,12 @@ struct LogTaskSheet: View {
                                     Button(action: { selectedRoom = room }) {
                                         Text(room.name)
                                             .font(RyddeTheme.Fonts.bodySmall)
-                                            .foregroundColor(
-                                                selectedRoom?.id == room.id
-                                                    ? Color(RyddeTheme.Colors.accent)
-                                                    : Color(RyddeTheme.Colors.secondaryText)
-                                            )
+                                            .foregroundColor(selectedRoom?.id == room.id ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.secondaryText))
                                             .padding(.horizontal, RyddeTheme.Spacing.md)
                                             .padding(.vertical, RyddeTheme.Spacing.sm)
-                                            .background(
-                                                selectedRoom?.id == room.id
-                                                    ? Color(RyddeTheme.Colors.selectedBackground)
-                                                    : Color(RyddeTheme.Colors.surface)
-                                            )
+                                            .background(selectedRoom?.id == room.id ? Color(RyddeTheme.Colors.selectedBackground) : Color(RyddeTheme.Colors.surface))
                                             .cornerRadius(RyddeTheme.CornerRadius.button)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
-                                                    .stroke(
-                                                        selectedRoom?.id == room.id
-                                                            ? Color(RyddeTheme.Colors.accent)
-                                                            : Color(RyddeTheme.Colors.border),
-                                                        lineWidth: 1
-                                                    )
-                                            )
+                                            .overlay(RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button).stroke(selectedRoom?.id == room.id ? Color(RyddeTheme.Colors.accent) : Color(RyddeTheme.Colors.border), lineWidth: 1))
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -58,7 +41,6 @@ struct LogTaskSheet: View {
                         }
                     }
 
-                    // Title
                     VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
                         Text("What did you clean?")
                             .font(RyddeTheme.Fonts.bodyMedium11)
@@ -71,13 +53,9 @@ struct LogTaskSheet: View {
                             .padding(RyddeTheme.Spacing.md)
                             .background(Color(RyddeTheme.Colors.surface))
                             .cornerRadius(RyddeTheme.CornerRadius.button)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
-                                    .stroke(Color(RyddeTheme.Colors.border), lineWidth: 1)
-                            )
+                            .overlay(RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button).stroke(Color(RyddeTheme.Colors.border), lineWidth: 1))
                     }
 
-                    // Description (optional)
                     VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
                         Text("Details (optional)")
                             .font(RyddeTheme.Fonts.bodyMedium11)
@@ -91,36 +69,23 @@ struct LogTaskSheet: View {
                             .padding(RyddeTheme.Spacing.md)
                             .background(Color(RyddeTheme.Colors.surface))
                             .cornerRadius(RyddeTheme.CornerRadius.button)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button)
-                                    .stroke(Color(RyddeTheme.Colors.border), lineWidth: 1)
-                            )
+                            .overlay(RoundedRectangle(cornerRadius: RyddeTheme.CornerRadius.button).stroke(Color(RyddeTheme.Colors.border), lineWidth: 1))
                     }
 
-                    // When
-                    DatePicker(
-                        "When",
-                        selection: $completedAt,
-                        in: ...Date(),
-                        displayedComponents: [.date, .hourAndMinute]
-                    )
-                    .font(RyddeTheme.Fonts.body)
-                    .foregroundColor(Color(RyddeTheme.Colors.primaryText))
-                    .tint(Color(RyddeTheme.Colors.accent))
+                    DatePicker("When", selection: $completedAt, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
+                        .font(RyddeTheme.Fonts.body)
+                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
+                        .tint(Color(RyddeTheme.Colors.accent))
 
                     if let error = errorMessage {
-                        Text(error)
-                            .font(RyddeTheme.Fonts.bodySmall)
-                            .foregroundColor(.red)
+                        Text(error).font(RyddeTheme.Fonts.bodySmall).foregroundColor(.red)
                     }
 
-                    // Save button
                     Button(action: save) {
                         Text(isSaving ? "Saving..." : "Save")
                             .font(RyddeTheme.Fonts.buttonLabel)
                             .foregroundColor(Color(RyddeTheme.Colors.snow))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 48)
+                            .frame(maxWidth: .infinity).frame(height: 48)
                             .background(Color(RyddeTheme.Colors.accent))
                             .cornerRadius(RyddeTheme.CornerRadius.button)
                     }
@@ -133,31 +98,18 @@ struct LogTaskSheet: View {
             .background(Color(RyddeTheme.Colors.background).ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Log a task")
-                        .font(RyddeTheme.Fonts.headingSmall)
-                        .foregroundColor(Color(RyddeTheme.Colors.primaryText))
-                }
+                ToolbarItem(placement: .principal) { Text("Log a task").font(RyddeTheme.Fonts.headingSmall).foregroundColor(Color(RyddeTheme.Colors.primaryText)) }
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundColor(Color(RyddeTheme.Colors.primaryText))
-                            .frame(width: 44, height: 44)
-                    }
+                    Button(action: { dismiss() }) { Image(systemName: "xmark").font(.system(size: 17, weight: .medium)).foregroundColor(Color(RyddeTheme.Colors.primaryText)).frame(width: 44, height: 44) }
                 }
             }
-            .task {
-                await loadRooms()
-            }
+            .task { await loadRooms() }
         }
     }
 
     private func loadRooms() async {
         do {
-            let response: HouseholdDetailResponse = try await APIService.shared.get(
-                endpoint: "/api/households/me"
-            )
+            let response: HouseholdDetailResponse = try await APIService.shared.get(endpoint: "/api/households/me")
             rooms = (response.rooms ?? []).map { RoomOption(id: $0.id, name: $0.name) }
         } catch {}
     }
@@ -166,19 +118,10 @@ struct LogTaskSheet: View {
         guard !isSaving else { return }
         isSaving = true
         errorMessage = nil
-
         Task {
             do {
-                let body = LogTaskRequest(
-                    roomId: selectedRoom?.id,
-                    title: title.trimmingCharacters(in: .whitespaces),
-                    description: description.trimmingCharacters(in: .whitespaces).isEmpty ? nil : description,
-                    completedAt: completedAt
-                )
-                let _: LogTaskResponse = try await APIService.shared.post(
-                    endpoint: "/api/tasks/log",
-                    body: body
-                )
+                let body = LogTaskRequest(roomId: selectedRoom?.id, title: title.trimmingCharacters(in: .whitespaces), description: description.trimmingCharacters(in: .whitespaces).isEmpty ? nil : description, completedAt: completedAt)
+                let _: LogTaskResponse = try await APIService.shared.post(endpoint: "/api/tasks/log", body: body)
                 onSaved()
                 dismiss()
             } catch {
