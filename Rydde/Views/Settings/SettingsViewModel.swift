@@ -36,6 +36,8 @@ final class SettingsViewModel: ObservableObject {
     @Published var homeType: HomeType?
     @Published var roomCount = 0
     @Published var painPointCount = 0
+    @Published var roomNames: [String] = []
+    @Published var painPointItems: [PainPointItem] = []
     @Published var householdMembers: [HouseholdMember] = []
     @Published var inviteCode: String?
     @Published var showShareSheet = false
@@ -46,8 +48,13 @@ final class SettingsViewModel: ObservableObject {
     @Published var reminderDuration = 15
     @Published var reminderDays: Set<DayOfWeek> = [.mon, .tue, .wed, .thu, .fri]
     @Published var displayName = ""
+    @Published var showEditHome = false
+    @Published var showEditRooms = false
+    @Published var showEditPainPoints = false
 
     private var automationId: UUID?
+    private var spaceId: UUID?
+    private var householdId: UUID?
     private var hasRequestedNotifications = false
 
     func load() async {
@@ -77,11 +84,25 @@ final class SettingsViewModel: ObservableObject {
             let response: HouseholdDetailResponse = try await APIService.shared.get(
                 endpoint: "/api/households/me"
             )
+            householdId = response.household.id
             roomCount = response.rooms?.count ?? 0
             painPointCount = response.painPoints?.count ?? 0
             inviteCode = response.household.inviteCode
+            roomNames = (response.rooms ?? []).map { $0.name }
+            painPointItems = (response.painPoints ?? []).map {
+                PainPointItem(id: $0.id, description: $0.description)
+            }
             householdMembers = (response.members ?? []).map {
                 HouseholdMember(id: $0.id, displayName: $0.displayName ?? "Member", joinedAt: $0.joinedAt)
+            }
+
+            // Try to determine home type from spaces
+            let spacesResponse: SpacesListResponse? = try? await APIService.shared.get(
+                endpoint: "/api/spaces"
+            )
+            if let space = spacesResponse?.spaces.first {
+                spaceId = space.id
+                homeType = HomeType(rawValue: space.name.lowercased())
             }
         } catch {}
     }
@@ -116,6 +137,47 @@ final class SettingsViewModel: ObservableObject {
         } catch {
             joinError = "Invalid code or couldn't join."
         }
+    }
+
+    // MARK: - Edit Home
+
+    func updateHomeType(_ type: HomeType) async {
+        guard let spaceId else { return }
+        let body = UpdateSpaceRequest(id: spaceId, name: type.rawValue)
+        let _: UpdateSpaceResponse? = try? await APIService.shared.put(
+            endpoint: "/api/spaces",
+            body: body
+        )
+        homeType = type
+    }
+
+    func updateRooms(_ rooms: [String]) async {
+        guard let spaceId else { return }
+        let body = UpdateSpaceRequest(id: spaceId, rooms: rooms)
+        let _: UpdateSpaceResponse? = try? await APIService.shared.put(
+            endpoint: "/api/spaces",
+            body: body
+        )
+        roomNames = rooms
+        roomCount = rooms.count
+    }
+
+    func addPainPoints(_ descriptions: [String]) async {
+        guard let householdId else { return }
+        let body = CreatePainPointsRequest(householdId: householdId, descriptions: descriptions)
+        let _: CreatePainPointsResponse? = try? await APIService.shared.post(
+            endpoint: "/api/pain-points",
+            body: body
+        )
+        painPointCount += descriptions.count
+    }
+
+    func deletePainPoint(_ id: UUID) async {
+        struct DeleteResponse: Decodable { let deleted: Bool }
+        let _: DeleteResponse? = try? await APIService.shared.delete(
+            endpoint: "/api/pain-points?id=\(id.uuidString)"
+        )
+        painPointCount = max(0, painPointCount - 1)
     }
 
     // MARK: - Automation
@@ -157,16 +219,21 @@ final class SettingsViewModel: ObservableObject {
         )
 
         if let automationId {
-            let _: Automation? = try? await APIService.shared.patch(
+            let response: AutomationDetail? = try? await APIService.shared.patch(
                 endpoint: "/api/automations/\(automationId.uuidString)",
                 body: body
             )
+            if let r = response {
+                reminderEnabled = r.isEnabled
+            }
         } else {
-            if let response: Automation = try? await APIService.shared.post(
+            let response: AutomationDetail? = try? await APIService.shared.post(
                 endpoint: "/api/automations",
                 body: body
-            ) {
-                automationId = response.id
+            )
+            if let r = response {
+                automationId = r.id
+                reminderEnabled = r.isEnabled
             }
         }
     }
@@ -259,4 +326,32 @@ struct AutomationDetail: Decodable, Identifiable {
 struct SaveAutomationRequest: Encodable {
     let isEnabled: Bool
     let config: AutomationConfig
+}
+
+struct SpacesListResponse: Decodable {
+    let spaces: [SpaceDetail]
+}
+
+struct SpaceDetail: Decodable, Identifiable {
+    let id: UUID
+    let name: String
+}
+
+struct UpdateSpaceRequest: Encodable {
+    let id: UUID
+    var name: String?
+    var rooms: [String]?
+}
+
+struct UpdateSpaceResponse: Decodable {
+    let space: SpaceDetail
+}
+
+struct CreatePainPointsRequest: Encodable {
+    let householdId: UUID
+    let descriptions: [String]
+}
+
+struct CreatePainPointsResponse: Decodable {
+    let painPoints: [PainPoint]
 }

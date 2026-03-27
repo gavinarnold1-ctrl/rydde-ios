@@ -10,6 +10,8 @@ struct HomeScreen: View {
     @State private var activeSession: SessionFlowState?
     @State private var selectedTab: AppTab = .clean
     @State private var showSettings = false
+    @Environment(\.deepLinkDuration) private var deepLinkDuration
+    @Environment(\.deepLinkAction) private var deepLinkAction
 
     var body: some View {
         ZStack {
@@ -28,6 +30,44 @@ struct HomeScreen: View {
             }
         }
         .animation(.easeOut(duration: 0.5), value: activeSession != nil)
+        .onChange(of: deepLinkDuration.wrappedValue) { _, duration in
+            if let duration {
+                selectedDuration = duration
+                activeSession = SessionFlowState(durationMinutes: duration)
+                deepLinkDuration.wrappedValue = nil
+            }
+        }
+        .onChange(of: deepLinkAction.wrappedValue) { _, action in
+            if let action {
+                handleDeepLinkAction(action)
+                deepLinkAction.wrappedValue = nil
+            }
+        }
+    }
+
+    private func handleDeepLinkAction(_ action: DeepLinkAction) {
+        switch action {
+        case .done(let sessionId):
+            Task {
+                let body = UpdateSessionRequest(status: "done")
+                let _: Session? = try? await APIService.shared.patch(
+                    endpoint: "/api/sessions/\(sessionId.uuidString)",
+                    body: body
+                )
+                await LiveActivityService.shared.end()
+                activeSession = nil
+            }
+        case .skip(let sessionId):
+            Task {
+                let body = UpdateSessionRequest(status: "skipped")
+                let _: Session? = try? await APIService.shared.patch(
+                    endpoint: "/api/sessions/\(sessionId.uuidString)",
+                    body: body
+                )
+                await LiveActivityService.shared.end()
+                activeSession = nil
+            }
+        }
     }
 
     private var mainContent: some View {

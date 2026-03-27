@@ -72,13 +72,12 @@ struct SessionFlow: View {
     private func fetchTask() async {
         loadingStartTime = Date()
 
-        // Start a timeout monitor
         let timeoutTask = Task {
-            try await Task.sleep(nanoseconds: 10_000_000_000) // 10s
+            try await Task.sleep(nanoseconds: 10_000_000_000)
             if phase == .loading {
                 // Show "taking longer" message but keep waiting
             }
-            try await Task.sleep(nanoseconds: 5_000_000_000) // another 5s (15s total)
+            try await Task.sleep(nanoseconds: 5_000_000_000)
             if phase == .loading {
                 phase = .error("Taking longer than usual.\nWant to try again?")
             }
@@ -93,6 +92,14 @@ struct SessionFlow: View {
             generatedTask = response.task
             phase = .active
             startTimer()
+
+            // Start live activity
+            await LiveActivityService.shared.start(
+                sessionId: response.sessionId,
+                room: response.task.room,
+                taskTitle: response.task.title,
+                durationMinutes: state.durationMinutes
+            )
         } catch {
             timeoutTask.cancel()
             if phase == .loading {
@@ -104,11 +111,29 @@ struct SessionFlow: View {
     private func startTimer() {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             timerSeconds += 1
+
+            // Check if time is up
+            if timerSeconds >= state.durationMinutes * 60 {
+                Task { @MainActor in
+                    await LiveActivityService.shared.markTimesUp()
+                }
+            }
         }
     }
 
     private func handleDone(task: GeneratedTask) {
         completedTaskTitle = task.title
+
+        // End live activity
+        Task {
+            await LiveActivityService.shared.end()
+        }
+
+        // Update widget data
+        WidgetService.shared.updateAfterSession(
+            taskTitle: task.title,
+            room: task.room
+        )
 
         if let sessionId {
             Task {
@@ -124,6 +149,11 @@ struct SessionFlow: View {
     }
 
     private func handleSkip() {
+        // End live activity
+        Task {
+            await LiveActivityService.shared.end()
+        }
+
         if let sessionId {
             Task {
                 let body = UpdateSessionRequest(status: "skipped")
