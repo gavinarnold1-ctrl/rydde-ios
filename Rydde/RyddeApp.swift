@@ -29,7 +29,7 @@ struct RyddeApp: App {
                let duration = Int(durationStr) {
                 deepLinkDuration = duration
             } else {
-                deepLinkDuration = 15 // default
+                deepLinkDuration = 15
             }
 
         case "done":
@@ -54,7 +54,7 @@ struct RyddeApp: App {
 
 // MARK: - Deep Link Types
 
-enum DeepLinkAction {
+enum DeepLinkAction: Equatable {
     case done(sessionId: UUID)
     case skip(sessionId: UUID)
 }
