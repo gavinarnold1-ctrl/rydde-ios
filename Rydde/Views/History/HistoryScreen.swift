@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HistoryScreen: View {
     @StateObject private var viewModel = HistoryViewModel()
+    @State private var showLogSheet = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -50,6 +51,11 @@ struct HistoryScreen: View {
         .task {
             await viewModel.initialLoad()
         }
+        .sheet(isPresented: $showLogSheet) {
+            LogTaskSheet(onSaved: {
+                Task { await viewModel.retry() }
+            })
+        }
     }
 
     private var header: some View {
@@ -58,6 +64,13 @@ struct HistoryScreen: View {
                 .font(RyddeTheme.Fonts.headingSmall)
                 .foregroundColor(Color(RyddeTheme.Colors.primaryText))
             Spacer()
+            Button(action: { showLogSheet = true }) {
+                Image(systemName: "plus")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(Color(RyddeTheme.Colors.accent))
+                    .frame(width: 44, height: 44)
+            }
+            .accessibilityLabel("Log a task")
         }
     }
 
