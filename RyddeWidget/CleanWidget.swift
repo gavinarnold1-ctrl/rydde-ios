@@ -33,7 +33,7 @@ struct CleanWidgetProvider: TimelineProvider {
         let title = d?.string(forKey: "lastTaskTitle")
         let room = d?.string(forKey: "lastTaskRoom")
         let ts = d?.double(forKey: "lastCompletedAt")
-        let lastDate = ts.map { $0 > 0 ? Date(timeIntervalSince1970: $0) : nil } ?? nil
+        let lastDate = (ts ?? 0) > 0 ? Date(timeIntervalSince1970: ts!) : nil
         return CleanWidgetEntry(date: Date(), streak: streak, lastTaskTitle: title, lastTaskRoom: room, lastCompletedAt: lastDate)
     }
 }
@@ -53,7 +53,7 @@ struct CleanWidgetSmallView: View {
                 Text("\(entry.streak)")
                     .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundColor(.green)
-                Text(entry.streak == 1 ? "day streak" : "day streak")
+                Text("day streak")
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
             } else {
@@ -63,8 +63,6 @@ struct CleanWidgetSmallView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .widgetURL(URL(string: "rydde://clean"))
     }
 }
 
@@ -73,7 +71,6 @@ struct CleanWidgetMediumView: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            // Left: streak
             VStack(alignment: .leading, spacing: 4) {
                 Text("rydde")
                     .font(.system(size: 14, weight: .medium))
@@ -97,7 +94,6 @@ struct CleanWidgetMediumView: View {
 
             Divider()
 
-            // Right: last task + quick actions
             VStack(alignment: .leading, spacing: 8) {
                 if let title = entry.lastTaskTitle, let room = entry.lastTaskRoom {
                     Text(room)
@@ -142,7 +138,6 @@ struct CleanWidgetMediumView: View {
                 }
             }
         }
-        .padding()
     }
 }
 
@@ -152,10 +147,13 @@ struct CleanWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: CleanWidgetProvider()) { entry in
             if #available(iOS 17.0, *) {
-                Group {
-                    // SwiftUI automatically picks the right view based on widget family
-                }
-                .containerBackground(.fill.tertiary, for: .widget)
+                CleanWidgetSmallView(entry: entry)
+                    .containerBackground(.fill.tertiary, for: .widget)
+                    .widgetURL(URL(string: "rydde://clean"))
+            } else {
+                CleanWidgetSmallView(entry: entry)
+                    .padding()
+                    .widgetURL(URL(string: "rydde://clean"))
             }
         }
         .configurationDisplayName("Rydde")
