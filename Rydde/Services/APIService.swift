@@ -85,7 +85,7 @@ final class APIService {
         urlRequest.httpMethod = method
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        if let token = AuthService.shared.jwt {
+        if let token = await AuthService.shared.jwt {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 
