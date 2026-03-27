@@ -29,12 +29,13 @@ targets:
     entitlements:
       path: Rydde/Rydde.entitlements
     dependencies:
-      - target: RyddeWidget
+      - target: RyddeWidgetExtension
         embed: true
 
-  RyddeWidget:
+  RyddeWidgetExtension:
     type: app-extension
     platform: iOS
+    product: com.apple.product-type.app-extension
     sources:
       - RyddeWidget
       - path: Rydde/Models/CleaningActivityAttributes.swift
@@ -55,3 +56,4 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         GENERATE_INFOPLIST_FILE: true
         LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../../Frameworks"
+        SKIP_INSTALL: true
