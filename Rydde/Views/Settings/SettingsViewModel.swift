@@ -3,9 +3,7 @@ import SwiftUI
 
 enum DayOfWeek: String, CaseIterable, Identifiable, Codable {
     case mon, tue, wed, thu, fri, sat, sun
-
     var id: String { rawValue }
-
     var shortLabel: String {
         switch self {
         case .mon: return "M"
@@ -23,7 +21,6 @@ struct HouseholdMember: Identifiable {
     let id: UUID
     let displayName: String
     let joinedAt: Date
-
     var joinedLabel: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM yyyy"
@@ -63,8 +60,6 @@ final class SettingsViewModel: ObservableObject {
         await loadAutomation()
     }
 
-    // MARK: - Profile
-
     private func loadProfile() async {
         do {
             let response: MeResponse = try await APIService.shared.get(endpoint: "/api/me")
@@ -77,29 +72,19 @@ final class SettingsViewModel: ObservableObject {
         let _: User? = try? await APIService.shared.patch(endpoint: "/api/me", body: body)
     }
 
-    // MARK: - Household
-
     private func loadHousehold() async {
         do {
-            let response: HouseholdDetailResponse = try await APIService.shared.get(
-                endpoint: "/api/households/me"
-            )
+            let response: HouseholdDetailResponse = try await APIService.shared.get(endpoint: "/api/households/me")
             householdId = response.household.id
             roomCount = response.rooms?.count ?? 0
             painPointCount = response.painPoints?.count ?? 0
             inviteCode = response.household.inviteCode
             roomNames = (response.rooms ?? []).map { $0.name }
-            painPointItems = (response.painPoints ?? []).map {
-                PainPointItem(id: $0.id, description: $0.description)
-            }
+            painPointItems = (response.painPoints ?? []).map { PainPointItem(id: $0.id, description: $0.description) }
             householdMembers = (response.members ?? []).map {
                 HouseholdMember(id: $0.id, displayName: $0.displayName ?? "Member", joinedAt: $0.joinedAt)
             }
-
-            // Try to determine home type from spaces
-            let spacesResponse: SpacesListResponse? = try? await APIService.shared.get(
-                endpoint: "/api/spaces"
-            )
+            let spacesResponse: SpacesListResponse? = try? await APIService.shared.get(endpoint: "/api/spaces")
             if let space = spacesResponse?.spaces.first {
                 spaceId = space.id
                 homeType = HomeType(rawValue: space.name.lowercased())
@@ -109,9 +94,7 @@ final class SettingsViewModel: ObservableObject {
 
     func generateInviteCode() async {
         do {
-            let response: InviteCodeResponse = try await APIService.shared.post(
-                endpoint: "/api/households/invite"
-            )
+            let response: InviteCodeResponse = try await APIService.shared.post(endpoint: "/api/households/invite")
             inviteCode = response.code
         } catch {}
     }
@@ -125,13 +108,9 @@ final class SettingsViewModel: ObservableObject {
         let code = joinCode.trimmingCharacters(in: .whitespaces)
         guard !code.isEmpty else { return }
         joinError = nil
-
         do {
             let body = JoinHouseholdRequest(code: code)
-            let _: JoinHouseholdResponse = try await APIService.shared.post(
-                endpoint: "/api/households/join",
-                body: body
-            )
+            let _: JoinHouseholdResponse = try await APIService.shared.post(endpoint: "/api/households/join", body: body)
             joinCode = ""
             await loadHousehold()
         } catch {
@@ -139,25 +118,17 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Edit Home
-
     func updateHomeType(_ type: HomeType) async {
         guard let spaceId else { return }
         let body = UpdateSpaceRequest(id: spaceId, name: type.rawValue)
-        let _: UpdateSpaceResponse? = try? await APIService.shared.put(
-            endpoint: "/api/spaces",
-            body: body
-        )
+        let _: UpdateSpaceResponse? = try? await APIService.shared.put(endpoint: "/api/spaces", body: body)
         homeType = type
     }
 
     func updateRooms(_ rooms: [String]) async {
         guard let spaceId else { return }
         let body = UpdateSpaceRequest(id: spaceId, rooms: rooms)
-        let _: UpdateSpaceResponse? = try? await APIService.shared.put(
-            endpoint: "/api/spaces",
-            body: body
-        )
+        let _: UpdateSpaceResponse? = try? await APIService.shared.put(endpoint: "/api/spaces", body: body)
         roomNames = rooms
         roomCount = rooms.count
     }
@@ -165,28 +136,19 @@ final class SettingsViewModel: ObservableObject {
     func addPainPoints(_ descriptions: [String]) async {
         guard let householdId else { return }
         let body = CreatePainPointsRequest(householdId: householdId, descriptions: descriptions)
-        let _: CreatePainPointsResponse? = try? await APIService.shared.post(
-            endpoint: "/api/pain-points",
-            body: body
-        )
+        let _: CreatePainPointsResponse? = try? await APIService.shared.post(endpoint: "/api/pain-points", body: body)
         painPointCount += descriptions.count
     }
 
     func deletePainPoint(_ id: UUID) async {
         struct DeleteResponse: Decodable { let deleted: Bool }
-        let _: DeleteResponse? = try? await APIService.shared.delete(
-            endpoint: "/api/pain-points?id=\(id.uuidString)"
-        )
+        let _: DeleteResponse? = try? await APIService.shared.delete(endpoint: "/api/pain-points?id=\(id.uuidString)")
         painPointCount = max(0, painPointCount - 1)
     }
 
-    // MARK: - Automation
-
     private func loadAutomation() async {
         do {
-            let response: AutomationListResponse = try await APIService.shared.get(
-                endpoint: "/api/automations"
-            )
+            let response: AutomationListResponse = try await APIService.shared.get(endpoint: "/api/automations")
             if let automation = response.automations.first {
                 automationId = automation.id
                 reminderEnabled = automation.isEnabled
@@ -208,47 +170,24 @@ final class SettingsViewModel: ObservableObject {
     }
 
     func saveAutomation() async {
-        let config = AutomationConfig(
-            timeOfDay: timeToString(reminderTime),
-            durationMinutes: reminderDuration,
-            days: Array(reminderDays)
-        )
-        let body = SaveAutomationRequest(
-            isEnabled: reminderEnabled,
-            config: config
-        )
-
+        let config = AutomationConfig(timeOfDay: timeToString(reminderTime), durationMinutes: reminderDuration, days: Array(reminderDays))
+        let body = SaveAutomationRequest(isEnabled: reminderEnabled, config: config)
         if let automationId {
-            let response: AutomationDetail? = try? await APIService.shared.patch(
-                endpoint: "/api/automations/\(automationId.uuidString)",
-                body: body
-            )
-            if let r = response {
-                reminderEnabled = r.isEnabled
-            }
+            let response: AutomationDetail? = try? await APIService.shared.patch(endpoint: "/api/automations/\(automationId.uuidString)", body: body)
+            if let r = response { reminderEnabled = r.isEnabled }
         } else {
-            let response: AutomationDetail? = try? await APIService.shared.post(
-                endpoint: "/api/automations",
-                body: body
-            )
-            if let r = response {
-                automationId = r.id
-                reminderEnabled = r.isEnabled
-            }
+            let response: AutomationDetail? = try? await APIService.shared.post(endpoint: "/api/automations", body: body)
+            if let r = response { automationId = r.id; reminderEnabled = r.isEnabled }
         }
     }
 
     func toggleDay(_ day: DayOfWeek) {
         if reminderDays.contains(day) {
-            if reminderDays.count > 1 {
-                reminderDays.remove(day)
-            }
+            if reminderDays.count > 1 { reminderDays.remove(day) }
         } else {
             reminderDays.insert(day)
         }
     }
-
-    // MARK: - Time Helpers
 
     private static func defaultReminderTime() -> Date {
         var components = DateComponents()
@@ -270,7 +209,7 @@ final class SettingsViewModel: ObservableObject {
     }
 }
 
-// MARK: - API Types
+// MARK: - API Types (no duplicates with OnboardingFlow)
 
 struct UpdateProfileRequest: Encodable {
     let firstName: String
@@ -345,13 +284,4 @@ struct UpdateSpaceRequest: Encodable {
 
 struct UpdateSpaceResponse: Decodable {
     let space: SpaceDetail
-}
-
-struct CreatePainPointsRequest: Encodable {
-    let householdId: UUID
-    let descriptions: [String]
-}
-
-struct CreatePainPointsResponse: Decodable {
-    let painPoints: [PainPoint]
 }
