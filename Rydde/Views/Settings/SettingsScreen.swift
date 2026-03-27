@@ -39,6 +39,27 @@ struct SettingsScreen: View {
             .task {
                 await viewModel.load()
             }
+            .sheet(isPresented: $viewModel.showEditHome) {
+                EditHomeSheet(homeType: $viewModel.homeType) { type in
+                    Task { await viewModel.updateHomeType(type) }
+                }
+            }
+            .sheet(isPresented: $viewModel.showEditRooms) {
+                EditRoomsSheet(rooms: viewModel.roomNames) { rooms in
+                    Task { await viewModel.updateRooms(rooms) }
+                }
+            }
+            .sheet(isPresented: $viewModel.showEditPainPoints) {
+                EditPainPointsSheet(
+                    painPoints: viewModel.painPointItems,
+                    onAdd: { descriptions in
+                        Task { await viewModel.addPainPoints(descriptions) }
+                    },
+                    onDelete: { id in
+                        Task { await viewModel.deletePainPoint(id) }
+                    }
+                )
+            }
         }
     }
 
@@ -46,9 +67,20 @@ struct SettingsScreen: View {
 
     private var yourHomeSection: some View {
         SettingsSection(title: "YOUR HOME") {
-            SettingsRow(label: "Home type", value: viewModel.homeType?.label ?? "—")
-            SettingsRow(label: "Rooms", value: "\(viewModel.roomCount) rooms")
-            SettingsRow(label: "Pain points", value: "\(viewModel.painPointCount) selected")
+            Button(action: { viewModel.showEditHome = true }) {
+                SettingsRow(label: "Home type", value: viewModel.homeType?.label ?? "\u2014")
+            }
+            .buttonStyle(.plain)
+
+            Button(action: { viewModel.showEditRooms = true }) {
+                SettingsRow(label: "Rooms", value: "\(viewModel.roomCount) rooms")
+            }
+            .buttonStyle(.plain)
+
+            Button(action: { viewModel.showEditPainPoints = true }) {
+                SettingsRow(label: "Pain points", value: "\(viewModel.painPointCount) selected")
+            }
+            .buttonStyle(.plain)
         }
     }
 
