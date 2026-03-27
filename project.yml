@@ -28,3 +28,30 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
     entitlements:
       path: Rydde/Rydde.entitlements
+    dependencies:
+      - target: RyddeWidget
+        embed: true
+
+  RyddeWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - RyddeWidget
+      - path: Rydde/Models/CleaningActivityAttributes.swift
+        buildPhase: sources
+    info:
+      properties:
+        CFBundleDisplayName: RyddeWidget
+        CFBundleVersion: "1"
+        CFBundleShortVersionString: "1.0"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.rydde.ios.widget
+        SWIFT_VERSION: "5.9"
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGN_STYLE: Automatic
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: true
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../../Frameworks"
