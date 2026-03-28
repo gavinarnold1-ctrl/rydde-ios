@@ -1,6 +1,18 @@
 import Foundation
 import SwiftUI
 
+enum AppearanceMode: String, CaseIterable {
+    case light, dark, system
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .light: return .light
+        case .dark: return .dark
+        case .system: return nil
+        }
+    }
+}
+
 enum DayOfWeek: String, CaseIterable, Identifiable, Codable {
     case mon, tue, wed, thu, fri, sat, sun
     var id: String { rawValue }
@@ -48,6 +60,11 @@ final class SettingsViewModel: ObservableObject {
     @Published var showEditHome = false
     @Published var showEditRooms = false
     @Published var showEditPainPoints = false
+    @Published var showSupplies = false
+    @Published var appearanceMode: AppearanceMode = {
+        let raw = UserDefaults.standard.string(forKey: "appearanceMode") ?? "light"
+        return AppearanceMode(rawValue: raw) ?? .light
+    }()
 
     private var automationId: UUID?
     private var spaceId: UUID?
@@ -146,7 +163,11 @@ final class SettingsViewModel: ObservableObject {
         painPointCount = max(0, painPointCount - 1)
     }
 
+    private var isLoadingAutomation = false
+
     private func loadAutomation() async {
+        isLoadingAutomation = true
+        defer { isLoadingAutomation = false }
         do {
             let response: AutomationListResponse = try await APIService.shared.get(endpoint: "/api/automations")
             if let automation = response.automations.first {
@@ -158,7 +179,9 @@ final class SettingsViewModel: ObservableObject {
                     reminderDays = Set(config.days)
                 }
             }
-        } catch {}
+        } catch {
+            print("loadAutomation failed: \(error)")
+        }
     }
 
     func onReminderEnabled() async {
@@ -170,14 +193,20 @@ final class SettingsViewModel: ObservableObject {
     }
 
     func saveAutomation() async {
+        guard !isLoadingAutomation else { return } // Don't save while loading
         let config = AutomationConfig(timeOfDay: timeToString(reminderTime), durationMinutes: reminderDuration, days: Array(reminderDays))
         let body = SaveAutomationRequest(isEnabled: reminderEnabled, config: config)
-        if let automationId {
-            let response: AutomationDetail? = try? await APIService.shared.patch(endpoint: "/api/automations/\(automationId.uuidString)", body: body)
-            if let r = response { reminderEnabled = r.isEnabled }
-        } else {
-            let response: AutomationDetail? = try? await APIService.shared.post(endpoint: "/api/automations", body: body)
-            if let r = response { automationId = r.id; reminderEnabled = r.isEnabled }
+        do {
+            if let automationId {
+                let response: AutomationDetail = try await APIService.shared.patch(endpoint: "/api/automations/\(automationId.uuidString)", body: body)
+                reminderEnabled = response.isEnabled
+            } else {
+                let response: AutomationDetail = try await APIService.shared.post(endpoint: "/api/automations", body: body)
+                automationId = response.id
+                reminderEnabled = response.isEnabled
+            }
+        } catch {
+            print("saveAutomation failed: \(error)")
         }
     }
 
@@ -187,6 +216,10 @@ final class SettingsViewModel: ObservableObject {
         } else {
             reminderDays.insert(day)
         }
+    }
+
+    func saveAppearance(_ mode: AppearanceMode) {
+        UserDefaults.standard.set(mode.rawValue, forKey: "appearanceMode")
     }
 
     private static func defaultReminderTime() -> Date {
