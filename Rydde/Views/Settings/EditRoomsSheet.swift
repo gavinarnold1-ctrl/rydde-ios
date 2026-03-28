@@ -16,7 +16,7 @@ struct EditRoomsSheet: View {
                                 Text(room).font(RyddeTheme.Fonts.body).foregroundColor(Color(RyddeTheme.Colors.primaryText))
                                 Spacer()
                                 Button(action: { rooms.remove(at: index) }) {
-                                    Image(systemName: "minus.circle.fill").foregroundColor(.red.opacity(0.7)).frame(width: 44, height: 44)
+                                    Image(systemName: "minus.circle.fill").foregroundColor(Color(RyddeTheme.Colors.ember)).frame(width: 44, height: 44)
                                 }
                             }
                             .padding(.horizontal, RyddeTheme.Spacing.md).padding(.vertical, RyddeTheme.Spacing.xs)
