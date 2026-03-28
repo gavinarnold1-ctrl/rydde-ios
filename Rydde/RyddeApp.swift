@@ -6,6 +6,11 @@ struct RyddeApp: App {
     @StateObject private var authService = AuthService.shared
     @State private var deepLinkDuration: Int?
     @State private var deepLinkAction: DeepLinkAction?
+    @AppStorage("appearanceMode") private var appearanceModeRaw: String = "light"
+
+    private var colorScheme: ColorScheme? {
+        AppearanceMode(rawValue: appearanceModeRaw)?.colorScheme
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -13,6 +18,7 @@ struct RyddeApp: App {
                 .environmentObject(authService)
                 .environment(\.deepLinkDuration, $deepLinkDuration)
                 .environment(\.deepLinkAction, $deepLinkAction)
+                .preferredColorScheme(colorScheme)
                 .onOpenURL { url in
                     handleDeepLink(url)
                 }

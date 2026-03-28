@@ -18,6 +18,11 @@ enum RyddeTheme {
         static let stone = UIColor(hex: 0x8B9A8E)
         static let midnight = UIColor(hex: 0x0F1F28)
         static let birch = UIColor(hex: 0xD4C5A9)
+        static let ember = UIColor(hex: 0xC45D3E)
+
+        // Matte light mode
+        static let matteCard = UIColor(hex: 0xF7F5F0)
+        static let matteBorder = UIColor(hex: 0xD8D3C8)
 
         // Dark mode
         static let darkBg = UIColor(hex: 0x0F1F28)
@@ -25,13 +30,13 @@ enum RyddeTheme {
         static let darkMoss = UIColor(hex: 0x5A9A52)
         static let darkSage = UIColor(hex: 0x7BA87A)
 
-        // Adaptive colors — respect system setting, no manual toggle in V1
+        // Adaptive colors
         static let background = UIColor { traits in
-            traits.userInterfaceStyle == .dark ? darkBg : snow
+            traits.userInterfaceStyle == .dark ? darkBg : linen
         }
 
         static let cardBackground = UIColor { traits in
-            traits.userInterfaceStyle == .dark ? darkCard : frost
+            traits.userInterfaceStyle == .dark ? darkCard : matteCard
         }
 
         static let primaryText = UIColor { traits in
@@ -47,11 +52,11 @@ enum RyddeTheme {
         }
 
         static let border = UIColor { traits in
-            traits.userInterfaceStyle == .dark ? darkCard : mist
+            traits.userInterfaceStyle == .dark ? darkCard : matteBorder
         }
 
         static let surface = UIColor { traits in
-            traits.userInterfaceStyle == .dark ? darkBg : snow
+            traits.userInterfaceStyle == .dark ? darkBg : linen
         }
 
         static let selectedBackground = UIColor { traits in
