@@ -135,6 +135,9 @@ struct SessionFlow: View {
             room: task.room
         )
 
+        // Update room freshness for widget
+        Task { await refreshRoomFreshness() }
+
         if let sessionId {
             Task {
                 let body = UpdateSessionRequest(status: "done")
@@ -165,6 +168,26 @@ struct SessionFlow: View {
         }
 
         onDismiss()
+    }
+
+    private func refreshRoomFreshness() async {
+        do {
+            let response: HouseholdDetailResponse = try await APIService.shared.get(endpoint: "/api/households/me")
+            let rooms = response.rooms ?? []
+            let calendar: CalendarResponse? = try? await APIService.shared.get(endpoint: "/api/tasks/calendar")
+
+            // Build freshness from task history
+            let tasks: TaskListResponse = try await APIService.shared.get(endpoint: "/api/tasks?page=1&limit=100")
+            let freshness = rooms.map { room -> RoomFreshnessData in
+                let roomTasks = tasks.tasks.filter { $0.roomId == room.id && $0.status == "done" }
+                let mostRecent = roomTasks.first
+                let days: Int? = mostRecent?.completedAt.map { completed in
+                    Calendar.current.dateComponents([.day], from: completed, to: Date()).day ?? 999
+                }
+                return RoomFreshnessData(name: room.name, daysSinceClean: days)
+            }
+            WidgetService.shared.updateRoomFreshness(freshness)
+        } catch {}
     }
 }
 

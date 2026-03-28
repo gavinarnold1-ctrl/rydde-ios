@@ -11,6 +11,7 @@ struct GeneratedTask: Codable {
 
 struct GenerateTaskRequest: Encodable {
     let durationMinutes: Int
+    let clientHour: Int
 }
 
 struct GenerateTaskResponse: Decodable {
@@ -24,7 +25,10 @@ final class TaskService {
     private init() {}
 
     func generateTask(durationMinutes: Int) async throws -> GenerateTaskResponse {
-        let body = GenerateTaskRequest(durationMinutes: durationMinutes)
+        let body = GenerateTaskRequest(
+            durationMinutes: durationMinutes,
+            clientHour: Calendar.current.component(.hour, from: Date())
+        )
         return try await APIService.shared.post(
             endpoint: "/api/generate-task",
             body: body
