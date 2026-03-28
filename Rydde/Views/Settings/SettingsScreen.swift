@@ -37,6 +37,9 @@ struct SettingsScreen: View {
             .sheet(isPresented: $viewModel.showEditPainPoints) {
                 EditPainPointsSheet(painPoints: viewModel.painPointItems, onAdd: { descriptions in Task { await viewModel.addPainPoints(descriptions) } }, onDelete: { id in Task { await viewModel.deletePainPoint(id) } })
             }
+            .sheet(isPresented: $viewModel.showSupplies) {
+                SuppliesView()
+            }
         }
     }
 
@@ -50,6 +53,9 @@ struct SettingsScreen: View {
             }.buttonStyle(.plain)
             Button(action: { viewModel.showEditPainPoints = true }) {
                 SettingsRow(label: "Pain points", value: "\(viewModel.painPointCount) selected")
+            }.buttonStyle(.plain)
+            Button(action: { viewModel.showSupplies = true }) {
+                SettingsRow(label: "Supplies", value: "Manage inventory")
             }.buttonStyle(.plain)
         }
     }
@@ -166,7 +172,21 @@ struct SettingsScreen: View {
                 Spacer()
                 TextField("Name", text: $viewModel.displayName).font(RyddeTheme.Fonts.body).foregroundColor(Color(RyddeTheme.Colors.primaryText)).multilineTextAlignment(.trailing).onSubmit { Task { await viewModel.updateDisplayName() } }
             }
-            Button(action: { authService.signOut() }) { Text("Sign out").font(RyddeTheme.Fonts.body).foregroundColor(.red).frame(minHeight: 44) }.accessibilityLabel("Sign out of your account")
+
+            VStack(alignment: .leading, spacing: RyddeTheme.Spacing.sm) {
+                Text("Appearance").font(RyddeTheme.Fonts.body).foregroundColor(Color(RyddeTheme.Colors.primaryText))
+                Picker("Appearance", selection: $viewModel.appearanceMode) {
+                    Text("Light").tag(AppearanceMode.light)
+                    Text("Dark").tag(AppearanceMode.dark)
+                    Text("System").tag(AppearanceMode.system)
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: viewModel.appearanceMode) { _, mode in
+                    viewModel.saveAppearance(mode)
+                }
+            }
+
+            Button(action: { authService.signOut() }) { Text("Sign out").font(RyddeTheme.Fonts.body).foregroundColor(Color(RyddeTheme.Colors.ember)).frame(minHeight: 44) }.accessibilityLabel("Sign out of your account")
         }
     }
 
